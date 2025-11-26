@@ -2,6 +2,8 @@
 
 namespace Database\Seeders;
 
+use App\Models\CardArena;
+use App\Models\CardAspect;
 use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -17,9 +19,18 @@ class DatabaseSeeder extends Seeder
     {
         // User::factory(10)->create();
 
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
-        ]);
+        CardAspect::query()->truncate();
+        foreach (['Villainy', 'Heroism', 'Vigilance', 'Command', 'Aggression', 'Cunning'] as $aspect) {
+            CardAspect::create([
+                'name' => $aspect,
+            ]);
+        }
+
+        CardArena::query()->truncate();
+        foreach (['ground', 'space'] as $arena) {
+            CardArena::create([
+                'name' => $arena,
+            ]);
+        }
     }
 }
