@@ -15,13 +15,13 @@ return new class extends Migration
             $table->id();
 
             $table->string('name');
-            $table->string('subtitle');
+            $table->string('subtitle')->nullable();
 
             $table->string('type');
 
-            $table->decimal('cost');
-            $table->decimal('power');
-            $table->decimal('health');
+            $table->integer('cost')->nullable();
+            $table->integer('power')->nullable();
+            $table->integer('health')->nullable();
 
             $table->boolean('doubleSided')->default(false);
 

@@ -14,9 +14,10 @@ return new class extends Migration
         Schema::create('card_versions', function (Blueprint $table) {
             $table->id();
 
+            $table->unsignedBigInteger('set_id');
             $table->unsignedBigInteger('card_id');
 
-            $table->decimal('number');
+            $table->integer('number');
 
             $table->string('variant')->default('normal');
 

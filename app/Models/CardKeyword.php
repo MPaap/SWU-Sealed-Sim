@@ -6,5 +6,5 @@ use Illuminate\Database\Eloquent\Model;
 
 class CardKeyword extends Model
 {
-    //
+    protected $fillable = ['name'];
 }

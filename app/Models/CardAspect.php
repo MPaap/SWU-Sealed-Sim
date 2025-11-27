@@ -6,5 +6,5 @@ use Illuminate\Database\Eloquent\Model;
 
 class CardAspect extends Model
 {
-    //
+    protected $fillable = ['name'];
 }

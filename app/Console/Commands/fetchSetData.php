@@ -2,6 +2,11 @@
 
 namespace App\Console\Commands;
 
+use App\Models\Card;
+use App\Models\CardArena;
+use App\Models\CardAspect;
+use App\Models\CardKeyword;
+use App\Models\CardTrait;
 use App\Models\Set;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Cache;
@@ -31,7 +36,26 @@ class fetchSetData extends Command
 
         $set = Set::firstOrCreate(['code' => $code], ['name' => $code]);
 
-        $result = Cache::remember("set_raw_data_{$code}", \Illuminate\Support\now()->addWeek(), function () use ($code) {
+        $result = $this->getDataFromSWUDB($code);
+
+        $result = json_decode($result, true);
+
+        $bar = $this->output->createProgressBar(count($result['data']));
+
+        $bar->start();
+
+        foreach ($result['data'] as $data) {
+            $this->addCard($data, $set);
+
+            $bar->advance();
+        }
+
+        $bar->finish();
+    }
+
+    private function getDataFromSWUDB(bool|array|string|null $code)
+    {
+        return Cache::remember("set_raw_data_{$code}", \Illuminate\Support\now()->addWeek(), function () use ($code) {
             $ch = curl_init();
 
             curl_setopt($ch, CURLOPT_URL, "https://api.swu-db.com/cards/{$code}");
@@ -52,11 +76,65 @@ class fetchSetData extends Command
 
             return $result;
         });
+    }
 
-        $result = json_decode($result, true);
+    private function addCard(array $data, $set)
+    {
+//        dump($data);
 
-        foreach ($result['data'] as $result['data'][0]) {
-            dd($result['data'][0]);
+        $debug = false;
+
+        $card = Card::firstOrCreate([
+            'name' => $data['Name'],
+            'subtitle' => $data['Subtitle'] ?? null,
+        ], [
+            'type' => $data['Type'],
+            'cost' => $data['Cost'] ?? null,
+            'power' => $data['Power'] ?? null,
+            'health' => $data['HP'] ?? null,
+            'doubleSided' => $data['DoubleSided'],
+        ]);
+
+        foreach ($data['Aspects'] ?? [] as $aspectName) {
+            $aspect = CardAspect::firstOrCreate(['name' => $aspectName]);
+            $card->aspects()->syncWithoutDetaching($aspect);
+        }
+
+        foreach ($data['Arenas'] ?? [] as $arenaName) {
+            $arena = CardArena::firstOrCreate(['name' => $arenaName]);
+            $card->arenas()->syncWithoutDetaching($arena);
+        }
+
+        foreach ($data['Traits'] ?? [] as $traitName) {
+            $trait = CardTrait::firstOrCreate(['name' => $traitName]);
+            $card->traits()->syncWithoutDetaching($trait);
+        }
+
+        foreach ($data['Keywords'] ?? [] as $keywordName) {
+            $keyword = CardKeyword::firstOrCreate(['name' => $keywordName]);
+            $card->keywords()->syncWithoutDetaching($keyword);
+        }
+
+        $card->versions()->firstOrCreate([
+            'set_id' => $set->id,
+            'number' => $data['Number'],
+        ], [
+            'rarity' => $data['Rarity'],
+            'variant' => $data['VariantType'],
+            'frontArt' => $data['FrontArt'],
+            'backArt' => $data['BackArt'] ?? null,
+        ]);
+
+        if ($debug) {
+            dump($data);
+            dump($card);
+            dump("Aspects: ". $card->aspects->implode('name', ', '));
+            dump("Arenas: ". $card->arenas->implode('name', ', '));
+            dump("Traits: ". $card->traits->implode('name', ', '));
+            dump("Keywords: ". $card->keywords->implode('name', ', '));
+            dump("Versions: ". $card->versions->implode('variant', ', '));
+
+            dd('debug');
         }
     }
 }
