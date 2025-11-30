@@ -53,7 +53,7 @@ class fetchSetData extends Command
         $bar->finish();
     }
 
-    private function getDataFromSWUDB(bool|array|string|null $code)
+    private function getDataFromSWUDB(string $code)
     {
         return Cache::remember("set_raw_data_{$code}", \Illuminate\Support\now()->addWeek(), function () use ($code) {
             $ch = curl_init();
@@ -62,11 +62,10 @@ class fetchSetData extends Command
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
             curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "GET");
 
-
-            $headers = array();
-            $headers[] = "Accept: application/json";
-            $headers[] = "Authorization: Bearer APIKEY";
-            curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+//            $headers = array();
+//            $headers[] = "Accept: application/json";
+//            $headers[] = "Authorization: Bearer APIKEY";
+//            curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
 
             $result = curl_exec($ch);
             if (curl_errno($ch)) {

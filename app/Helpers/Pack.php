@@ -8,39 +8,44 @@ use Illuminate\Support\Collection;
 
 class Pack
 {
-    public \Illuminate\Support\Collection $pack;
+    public \Illuminate\Support\Collection $cards;
     public Set $set;
 
     public function __construct(Set $set)
     {
-        $this->pack = collect();
+        $this->cards = collect();
         $this->set = $set;
     }
 
     public function generate()
     {
-        $pack = collect();
-
         $this->addLeader();
         $this->addBase();
         $this->addCommons(9);
         $this->addUncommons(3);
         $this->addRares(1);
+        $this->addFoils(1);
 
-        return $this->pack;
+        return $this->cards;
     }
 
     private function add(Collection $cards)
     {
-        $this->pack = $this->pack->merge($cards);
+        $this->cards = $this->cards->merge($cards);
     }
 
     private function addLeader(): void
     {
         // Get 1 random X rarity leader
-        $rarity = 'common';
+        $rarity = 'Common';
         if (rand(1, 8) === 1) { // Find real odds
             $rarity = 'rare';
+        }
+
+        // Get 1 random X rarity leader
+        $variant = 'Normal';
+        if (rand(1, (12*24)) === 1) { // Find real odds
+            $variant = 'Showcase';
         }
 
         $cards = Card::inRandomOrder()
@@ -50,7 +55,7 @@ class Pack
                 $query->where('set_id', $this->set->id);
             })
             ->withData()
-            ->with('versions')
+            ->LoadVersionWithVariant($variant)
             ->limit(1)
             ->get();
 
@@ -63,11 +68,11 @@ class Pack
         $cards = Card::inRandomOrder()
             ->where('type', 'base')
             ->whereHas('versions', function ($query) {
-                $query->where('rarity', 'common');
+                $query->where('rarity', 'Common');
                 $query->where('set_id', $this->set->id);
             })
             ->withData()
-            ->with('versions')
+            ->LoadVersionWithVariant()
             ->limit(1)
             ->get();
 
@@ -78,13 +83,13 @@ class Pack
     {
         // Get 9 random commons
         $cards = Card::inRandomOrder()
-            ->nonLeader()
+            ->nonLeaderOrBase()
             ->whereHas('versions', function ($query) {
-                $query->where('rarity', 'common');
+                $query->whereIn('rarity', ['Common', 'Special']);
                 $query->where('set_id', $this->set->id);
             })
             ->withData()
-            ->with('versions')
+            ->LoadVersionWithVariant()
             ->limit($amount)
             ->get();
 
@@ -95,13 +100,13 @@ class Pack
     {
         // Get 3 random uncommons
         $cards = Card::inRandomOrder()
-            ->nonLeader()
+            ->nonLeaderOrBase()
             ->whereHas('versions', function ($query) {
-                $query->where('rarity', 'uncommon');
+                $query->where('rarity', 'Uncommon');
                 $query->where('set_id', $this->set->id);
             })
             ->withData()
-            ->with('versions')
+            ->LoadVersionWithVariant()
             ->limit($amount)
             ->get();
 
@@ -111,20 +116,41 @@ class Pack
     private function addRares(int $amount)
     {
         // Get 1 random X rarity leader
-        $rarity = 'rare';
+        $rarity = 'Rare';
         if (rand(1, 8) === 1) { // Find real odds
-            $rarity = 'legendary';
+            $rarity = 'Legendary';
         }
         $cards = Card::inRandomOrder()
-            ->nonLeader()
+            ->nonLeaderOrBase()
             ->whereHas('versions', function ($query) use ($rarity) {
                 $query->where('rarity', $rarity);
                 $query->where('set_id', $this->set->id);
             })
             ->withData()
-            ->with('versions')
+            ->LoadVersionWithVariant()
             ->limit($amount)
             ->get();
+
+        $this->add($cards);
+    }
+
+    private function addFoils(int $amount)
+    {
+        $cards = Card::inRandomOrder()
+            ->nonLeaderOrBase()
+            ->whereHas('versions', function ($query) {
+                $query->where('set_id', $this->set->id);
+            })
+            ->withData()
+            ->LoadVersionWithVariant('Foil')
+            ->limit($amount)
+            ->get();
+
+        foreach ($cards as $card) {
+            if (is_null($card->version)) {
+                $card->load('version');
+            }
+        }
 
         $this->add($cards);
     }

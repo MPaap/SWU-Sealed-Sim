@@ -28,18 +28,30 @@ class Card extends Model
         return $this->belongsToMany(CardTrait::class, 'card_trait_pivot', 'card_id', 'trait_id');
     }
 
+    public function version($variant = 'normal'): Card|\Illuminate\Database\Eloquent\Relations\HasOne
+    {
+        return $this->hasOne(CardVersion::class);
+    }
+
     public function versions(): Card|\Illuminate\Database\Eloquent\Relations\HasMany
     {
         return $this->hasMany(CardVersion::class);
     }
 
-    public function scopeNonLeader($query)
+    public function scopeNonLeaderOrBase($query)
     {
-        $query->where('type', '!=', 'leader');
+        $query->whereNotIn('type', ['leader', 'base']);
     }
 
     public function scopeWithData($query)
     {
         $query->with(['arenas', 'aspects', 'keywords', 'traits']);
+    }
+
+    public function scopeLoadVersionWithVariant($query, $variant = 'normal')
+    {
+        $query->with(['version' => function ($q) use ($variant) {
+            $q->whereVariant($variant);
+        }]);
     }
 }
