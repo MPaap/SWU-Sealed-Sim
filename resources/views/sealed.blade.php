@@ -1,13 +1,21 @@
 @extends('app')
 
 @section('content')
-    @foreach($packs as $pack)
-        <div class="grid grid-cols-10 gap-4">
-             @foreach($pack as $card)
-                 <div>
-                     <img class="{{ $card->version->variant === 'Foil' ? 'holo' : ''}}" src="{{ $card->version->frontArt }}" />
-                 </div>
-             @endforeach
-        </div>
-    @endforeach
+    <div class="grid grid-cols-10 gap-4">
+         <div v-for="card in leaders">
+             <img :src="card.version.frontArt" />
+         </div>
+    </div>
+
+    <div class="grid grid-cols-10 gap-4 mt-4">
+         <div v-for="card in bases">
+             <img :src="card.version.frontArt" />
+         </div>
+    </div>
+
+    <div class="grid grid-cols-10 gap-4 mt-4">
+         <div v-for="card in openCards">
+             <img :src="card.version.frontArt" />
+         </div>
+    </div>
 @endsection

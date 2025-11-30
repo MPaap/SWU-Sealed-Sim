@@ -3,18 +3,20 @@
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    $set = \App\Models\Set::where('code', 'SEC')->firstOrFail();
+    return view('sealed');
+});
 
-    $packs = [
+Route::get('pool/{set}', function ($set) {
+    $set = \App\Models\Set::where('code', $set)->firstOrFail();
+
+    return [
+        (new \App\Helpers\Pack($set)->generate()),
         (new \App\Helpers\Pack($set)->generate()),
 //        (new \App\Helpers\Pack($set)->generate()),
 //        (new \App\Helpers\Pack($set)->generate()),
 //        (new \App\Helpers\Pack($set)->generate()),
 //        (new \App\Helpers\Pack($set)->generate()),
-//        (new \App\Helpers\Pack($set)->generate()),
     ];
-
-    return view('sealed', compact('packs'));
 });
 
 Route::get('/random', function () {

@@ -6,7 +6,9 @@
 
     <title>{{ config('app.name', 'Laravel') }}</title>
 
-    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    @vite('resources/css/app.css')
+
+    @vite('resources/js/app.js')
 
     <style>
         .holo {
@@ -15,6 +17,8 @@
     </style>
 </head>
 <body>
-@yield('content')
+    <div id="app">
+        @yield('content')
+    </div>
 </body>
 </html>
