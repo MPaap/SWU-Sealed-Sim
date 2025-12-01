@@ -12,10 +12,10 @@ Route::get('pool/{set}', function ($set) {
     return [
         (new \App\Helpers\Pack($set)->generate()),
         (new \App\Helpers\Pack($set)->generate()),
-//        (new \App\Helpers\Pack($set)->generate()),
-//        (new \App\Helpers\Pack($set)->generate()),
-//        (new \App\Helpers\Pack($set)->generate()),
-//        (new \App\Helpers\Pack($set)->generate()),
+        (new \App\Helpers\Pack($set)->generate()),
+        (new \App\Helpers\Pack($set)->generate()),
+        (new \App\Helpers\Pack($set)->generate()),
+        (new \App\Helpers\Pack($set)->generate()),
     ];
 });
 
