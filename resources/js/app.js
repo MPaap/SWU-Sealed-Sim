@@ -31,6 +31,74 @@ createApp({
             openCards.push(selectedCards[key])
 
             selectedCards.splice(key, 1);
+        },
+
+        aspectLess() {
+            return allCards.filter(card => card.aspects.length === 0).length;
+        },
+
+        heroism() {
+            return allCards.filter(card =>
+                card.aspects.length === 1 &&
+                card.aspects[0].name === "Heroism"
+            ).length;
+        },
+
+        villainy() {
+            return allCards.filter(card =>
+                card.aspects.length === 1 &&
+                card.aspects[0].name === "Villainy"
+            ).length;
+        },
+
+        getAspect(arr) {
+            if (arr.length === 1) {
+                return allCards.filter(card => {
+                    const aspectNames = card.aspects.map(a => a.name);
+
+                    return (
+                        aspectNames.includes(arr[0]) &&
+                        !aspectNames.includes("Heroism") &&
+                        !aspectNames.includes("Villainy")
+                    );
+                }).length;
+            }
+
+            return allCards.filter(card =>
+                arr.every(req =>
+                    card.aspects.some(a => a.name === req)
+                )
+            ).length;
+        },
+
+        exportToJson() {
+            let array = {
+                metadata: {
+                    name: "SWUSEALEDBUILDER",
+                },
+                leader: {
+                    id: "SEC_018",
+                    count: 1,
+                },
+                base: {
+                    id: "SEC_023",
+                    count: 1,
+                },
+                deck: [],
+            };
+
+            selectedCards.forEach((card) => {
+                array.deck.push({
+                    id: 'SEC_' + (card.version.number < 100 ? '0' : '') + card.version.number,
+                    count: 1,
+                })
+            })
+
+            navigator.clipboard.writeText(JSON.stringify(array)).then(function() {
+                console.log('Async: Copying to clipboard was successful!');
+            }, function(err) {
+                console.error('Async: Could not copy text: ', err);
+            });
         }
     },
     computed: {
