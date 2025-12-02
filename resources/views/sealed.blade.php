@@ -25,11 +25,11 @@
             <div class="bg-orange-100 p-4">
                 <div>Card pool @{{ openCards.length }}</div>
                 <div class="flex justify-between">
-                    <div>C: @{{ commons }}</div>
-                    <div>S: @{{ specials }}</div>
-                    <div>U: @{{ uncommons }}</div>
-                    <div>R: @{{ rares }}</div>
-                    <div>L: @{{ legendaries }}</div>
+                    <div @click="toggleShow('Common')" :class="show.includes('Common') ? '' : 'text-red-500'">C: @{{ commons }}</div>
+                    <div @click="toggleShow('Special')" :class="show.includes('Special') ? '' : 'text-red-500'">S: @{{ specials }}</div>
+                    <div @click="toggleShow('Uncommon')" :class="show.includes('Uncommon') ? '' : 'text-red-500'">U: @{{ uncommons }}</div>
+                    <div @click="toggleShow('Rare')" :class="show.includes('Rare') ? '' : 'text-red-500'">R: @{{ rares }}</div>
+                    <div @click="toggleShow('Legendary')" :class="show.includes('Legendary') ? '' : 'text-red-500'">L: @{{ legendaries }}</div>
                 </div>
 
                 <div class="flex justify-between">

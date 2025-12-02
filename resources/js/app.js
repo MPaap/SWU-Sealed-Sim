@@ -8,6 +8,9 @@ const bases = ref([]);
 const allCards = reactive([]);
 const openCards = reactive([]);
 const selectedCards = reactive([]);
+const show = reactive([
+    'Common', 'Special', 'Uncommon', 'Rare', 'Legendary'
+]);
 
 createApp({
     setup() {
@@ -18,6 +21,7 @@ createApp({
             allCards,
             openCards,
             selectedCards,
+            show,
         }
     },
     methods: {
@@ -99,13 +103,28 @@ createApp({
             }, function(err) {
                 console.error('Async: Could not copy text: ', err);
             });
+        },
+
+        toggleShow(string) {
+            if (show.includes(string)) {
+                const index = show.indexOf(string);
+                if (index !== -1) {
+                    show.splice(index, 1);
+                }
+            } else {
+                show.push(string);
+            }
         }
     },
     computed: {
         sortedOpenCards() {
-            return openCards.sort((a, b) => {
-                return a.version.number - b.version.number;
-            });
+            return openCards
+                .filter((card) => {
+                    return show.includes(card.version.rarity);
+                })
+                .sort((a, b) => {
+                    return a.version.number - b.version.number;
+                });
         },
 
         sortedSelectedCards() {
