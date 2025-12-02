@@ -11,10 +11,14 @@ const selectedCards = reactive([]);
 const show = reactive([
     'Common', 'Special', 'Uncommon', 'Rare', 'Legendary'
 ]);
+let selectedLeader = ref();
+let selectedBase = ref('SEC_019');
 
 createApp({
     setup() {
         return {
+            selectedLeader,
+            selectedBase,
             pool,
             leaders,
             bases,
@@ -25,6 +29,10 @@ createApp({
         }
     },
     methods: {
+        selectLeader(number) {
+            selectedLeader.value = number;
+        },
+
         moveToSelected(key) {
             selectedCards.push(openCards[key])
 
@@ -81,21 +89,29 @@ createApp({
                     name: "SWUSEALEDBUILDER",
                 },
                 leader: {
-                    id: "SEC_018",
+                    id: "SEC_" + this.padNumber(selectedLeader.value > 0 ? selectedLeader.value : 1),
                     count: 1,
                 },
                 base: {
-                    id: "SEC_023",
+                    id: selectedBase.value,
                     count: 1,
                 },
                 deck: [],
             };
 
             selectedCards.forEach((card) => {
-                array.deck.push({
-                    id: 'SEC_' + (card.version.number < 100 ? '0' : '') + card.version.number,
-                    count: 1,
-                })
+                let id = 'SEC_' + this.padNumber(card.version.number);
+
+                let key = array.deck.findIndex(item => item.id === id);
+
+                if (key > 0) {
+                    array.deck[key].count ++;
+                } else {
+                    array.deck.push({
+                        id: id,
+                        count: 1,
+                    })
+                }
             })
 
             navigator.clipboard.writeText(JSON.stringify(array)).then(function() {
@@ -114,6 +130,12 @@ createApp({
             } else {
                 show.push(string);
             }
+        },
+
+        padNumber(n) {
+            if (n < 10) return "00" + n;
+            if (n < 100) return "0" + n;
+            return String(n);
         }
     },
     computed: {

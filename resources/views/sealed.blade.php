@@ -6,7 +6,10 @@
             <div class="bg-red-100 p-4">
                 <div>Leaders</div>
                 <div class="grid grid-cols-6 gap-4 mt-4">
-                    <div v-for="card in leaders">
+                    <div v-for="card in leaders"
+                         @click="selectLeader(card.version.number)"
+                         class=""
+                         :class="selectedLeader == card.version.number ? '' : 'grayscale-66'">
                         <img :src="card.version.frontArt" />
                     </div>
                 </div>
@@ -118,6 +121,15 @@
         <div class="bg-green-500 p-4 overflow-y-scroll h-screen">
             <div class="flex justify-between">
                 <div>Deck @{{ selectedCards.length }}</div>
+                <div>
+                    BASE:
+                    <select v-model="selectedBase" class="bg-white px-2">
+                        <option value="SEC_019">Vigilance</option>
+                        <option value="SEC_021">Command</option>
+                        <option value="SEC_023">Aggression</option>
+                        <option value="SEC_025">Cunning</option>
+                    </select>
+                </div>
                 <button class="px-2 bg-purple-500 text-white rounded cursor-pointer hover:bg-purple-600" @click="exportToJson">Export</button>
             </div>
             <div class="grid grid-cols-3 gap-2 mt-4">

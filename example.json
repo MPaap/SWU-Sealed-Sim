@@ -1,158 +1,119 @@
 {
-    "leader": {
-        "id": "SEC_018",
-        "count": 1
-    },
-    "base": {
-        "id": "SEC_023",
-        "count": 1
-    },
-    "deck": [
-        {
-            "id": "SEC_044",
-            "count": 1
-        },
-        {
-            "id": "SEC_044",
-            "count": 1
-        },
-        {
-            "id": "SEC_045",
-            "count": 1
-        }
-    ]
-}
-
-{
     "metadata": {
-        "name": "SEALED0004",
-        "author": "SilverWar"
+        "name": "SWUSEALEDBUILDER"
     },
     "leader": {
-        "id": "SEC_018",
+        "id": "SEC_undefined",
         "count": 1
     },
     "base": {
-        "id": "SEC_023",
+        "id": "SEC_019",
         "count": 1
     },
     "deck": [
         {
-            "id": "SEC_226",
+            "id": "SEC_040",
             "count": 1
         },
         {
-            "id": "SEC_232",
+            "id": "SEC_072",
             "count": 1
         },
         {
-            "id": "SEC_152",
+            "id": "SEC_027",
             "count": 1
         },
         {
-            "id": "SEC_173",
+            "id": "SEC_028",
             "count": 1
         },
         {
-            "id": "SEC_213",
+            "id": "SEC_070",
             "count": 1
         },
         {
-            "id": "SEC_170",
-            "count": 1
-        },
-        {
-            "id": "SEC_231",
-            "count": 1
-        },
-        {
-            "id": "SEC_262",
-            "count": 1
-        },
-        {
-            "id": "SEC_166",
-            "count": 1
-        },
-        {
-            "id": "SEC_221",
-            "count": 1
-        },
-        {
-            "id": "SEC_181",
-            "count": 1
-        },
-        {
-            "id": "SEC_167",
-            "count": 1
-        },
-        {
-            "id": "SEC_161",
-            "count": 1
-        },
-        {
-            "id": "SEC_214",
-            "count": 1
-        },
-        {
-            "id": "SEC_263",
-            "count": 1
-        },
-        {
-            "id": "SEC_229",
-            "count": 1
-        },
-        {
-            "id": "SEC_216",
-            "count": 1
-        },
-        {
-            "id": "SEC_172",
+            "id": "SEC_111",
             "count": 2
         },
         {
-            "id": "SEC_222",
+            "id": "SEC_124",
             "count": 1
         },
         {
-            "id": "SEC_169",
+            "id": "SEC_031",
             "count": 1
         },
         {
-            "id": "SEC_235",
+            "id": "SEC_044",
             "count": 1
         },
         {
-            "id": "SEC_228",
+            "id": "SEC_075",
             "count": 1
         },
         {
-            "id": "SEC_260",
+            "id": "SEC_096",
             "count": 1
         },
         {
-            "id": "SEC_163",
+            "id": "SEC_097",
+            "count": 2
+        },
+        {
+            "id": "SEC_113",
             "count": 1
         },
         {
-            "id": "SEC_233",
+            "id": "SEC_128",
             "count": 1
         },
         {
-            "id": "SEC_230",
+            "id": "SEC_129",
             "count": 1
         },
         {
-            "id": "SEC_164",
+            "id": "SEC_062",
             "count": 1
         },
         {
-            "id": "SEC_160",
+            "id": "SEC_063",
             "count": 1
         },
         {
-            "id": "SEC_225",
+            "id": "SEC_098",
+            "count": 1
+        },
+        {
+            "id": "SEC_117",
+            "count": 1
+        },
+        {
+            "id": "SEC_118",
+            "count": 1
+        },
+        {
+            "id": "SEC_067",
+            "count": 2
+        },
+        {
+            "id": "SEC_036",
+            "count": 1
+        },
+        {
+            "id": "SEC_048",
+            "count": 1
+        },
+        {
+            "id": "SEC_049",
+            "count": 1
+        },
+        {
+            "id": "SEC_066",
+            "count": 2
+        },
+        {
+            "id": "SEC_102",
             "count": 1
         }
-    ],
-    "sideboard": []
+    ]
 }
