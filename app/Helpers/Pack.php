@@ -5,6 +5,7 @@ namespace App\Helpers;
 use App\Models\Card;
 use App\Models\Set;
 use Illuminate\Support\Collection;
+use Ramsey\Uuid\Uuid;
 
 class Pack
 {
@@ -31,6 +32,10 @@ class Pack
 
     private function add(Collection $cards)
     {
+        $cards->each(function ($card) use ($cards) {
+            $card->tmp_id = Uuid::uuid1()->toString();
+        });
+
         $this->cards = $this->cards->merge($cards);
     }
 
@@ -81,11 +86,16 @@ class Pack
 
     private function addCommons(int $amount)
     {
+        $rarity = 'Common';
+        if (rand(1, 20) === 1) { // Find real odds
+            $rarity = 'Special';
+        }
+
         // Get 9 random commons
         $cards = Card::inRandomOrder()
             ->nonLeaderOrBase()
-            ->whereHas('versions', function ($query) {
-                $query->whereIn('rarity', ['Common', 'Special']);
+            ->whereHas('versions', function ($query) use ($rarity) {
+                $query->whereIn('rarity', [$rarity]);
                 $query->where('set_id', $this->set->id);
             })
             ->withData()
@@ -146,11 +156,11 @@ class Pack
             ->limit($amount)
             ->get();
 
-        foreach ($cards as $card) {
+        $cards->each(function ($card) use ($cards) {
             if (is_null($card->version)) {
                 $card->load('version');
             }
-        }
+        });
 
         $this->add($cards);
     }

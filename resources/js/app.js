@@ -8,9 +8,10 @@ const bases = ref([]);
 const allCards = reactive([]);
 const openCards = reactive([]);
 const selectedCards = reactive([]);
-const show = reactive([
-    'Common', 'Special', 'Uncommon', 'Rare', 'Legendary'
-]);
+const show = reactive({
+    rarity: ['Common', 'Special', 'Uncommon', 'Rare', 'Legendary'],
+    aspect: ['Villainy', 'Heroism']
+});
 let selectedLeader = ref();
 let selectedBase = ref('SEC_019');
 
@@ -33,13 +34,17 @@ createApp({
             selectedLeader.value = number;
         },
 
-        moveToSelected(key) {
+        moveToSelected(uuid) {
+            let key = openCards.findIndex(card => card.tmp_id === uuid);
+
             selectedCards.push(openCards[key])
 
             openCards.splice(key, 1);
         },
 
-        moveToOpen(key) {
+        moveToOpen(uuid) {
+            let key = selectedCards.findIndex(card => card.tmp_id === uuid);
+
             openCards.push(selectedCards[key])
 
             selectedCards.splice(key, 1);
@@ -89,7 +94,7 @@ createApp({
                     name: "SWUSEALEDBUILDER",
                 },
                 leader: {
-                    id: "SEC_" + this.padNumber(selectedLeader.value > 0 ? selectedLeader.value : 1),
+                    id: "SEC_" + this.padNumber(selectedLeader.value),
                     count: 1,
                 },
                 base: {
@@ -121,14 +126,14 @@ createApp({
             });
         },
 
-        toggleShow(string) {
-            if (show.includes(string)) {
-                const index = show.indexOf(string);
+        toggleShow(string, key) {
+            if (show[key].includes(string)) {
+                const index = show[key].indexOf(string);
                 if (index !== -1) {
-                    show.splice(index, 1);
+                    show[key].splice(index, 1);
                 }
             } else {
-                show.push(string);
+                show[key].push(string);
             }
         },
 
@@ -141,9 +146,26 @@ createApp({
     computed: {
         sortedOpenCards() {
             return openCards
-                // .filter((card) => {
-                //     return show.includes(card.version.rarity);
-                // })
+                .filter((card) => {
+                    return show.rarity.includes(card.version.rarity);
+                })
+                .filter((card) => {
+                    if (show.aspect.length === 2) {
+                        return true;
+                    }
+
+                    const hasFilter = card.aspects.some(aspect => aspect.name === show.aspect[0]);
+                    const hasHeroism = card.aspects.some(aspect => aspect.name === "Heroism");
+                    const hasVillainy = card.aspects.some(aspect => aspect.name === "Villainy");
+
+                    if (show.aspect.length === 1) {
+                        return hasFilter || (!hasHeroism && !hasVillainy);
+                    }
+
+                    if (show.aspect.length === 0) {
+                        return ! card.aspects.some(aspect => aspect.name === "Heroism" || aspect.name === "Villainy")
+                    }
+                })
                 .sort((a, b) => {
                     return a.version.number - b.version.number;
                 });
@@ -187,6 +209,9 @@ axios.get('/pool/SEC').then((response) => {
         pack.forEach((card) => {
             switch (true) {
                 case card.type === 'Leader':
+                    if (selectedLeader.value === undefined) {
+                        selectedLeader.value = (card.version.number)
+                    }
                     leaders.value.push(card)
                     break;
                 case card.type === 'Base':
