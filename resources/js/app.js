@@ -119,9 +119,9 @@ createApp({
     computed: {
         sortedOpenCards() {
             return openCards
-                .filter((card) => {
-                    return show.includes(card.version.rarity);
-                })
+                // .filter((card) => {
+                //     return show.includes(card.version.rarity);
+                // })
                 .sort((a, b) => {
                     return a.version.number - b.version.number;
                 });
