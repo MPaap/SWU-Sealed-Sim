@@ -7,9 +7,9 @@
                 <div class="grid grid-cols-6 gap-4">
                     <div v-for="card in leaders"
                          @click="selectLeader(card.version.number)"
-                         class=""
+                         class="cursor-pointer hover:ring-2 ring-green-500/50 rounded-lg overflow-hidden"
                          :class="selectedLeader == card.version.number ? '' : 'opacity-45'">
-                        <img class="rounded-lg overflow-hidden" :src="card.version.frontArt" />
+                        <img class="" :src="card.version.frontArt" />
                     </div>
                 </div>
             </div>
@@ -135,8 +135,10 @@
                 </div>
 
                 <div class="grid grid-cols-7 gap-2 mt-2">
-                    <div v-for="card in sortedOpenCards" @click="moveToSelected(card.tmp_id)" class="cursor-pointer">
-                        <img class="rounded-lg overflow-hidden" :class="card.version.variant === 'Foil' ? 'holo' : ''" :src="card.version.frontArt" />
+                    <div v-for="card in sortedOpenCards"
+                         @click="moveToSelected(card.tmp_id)"
+                         class="cursor-pointer hover:ring-2 ring-green-500/50 rounded-lg overflow-hidden">
+                        <img class="" :class="card.version.variant === 'Foil' ? 'holo' : ''" :src="card.version.frontArt" />
                     </div>
                 </div>
             </div>
@@ -156,9 +158,82 @@
                 </div>
                 <button class="px-2 border-gray-300 border-2 text-white rounded cursor-pointer" @click="exportToJson">Export</button>
             </div>
-            <div class="grid grid-cols-3 gap-2 mt-4">
-                <div v-for="card in sortedSelectedCards" @click="moveToOpen(card.tmp_id)" class="cursor-pointer">
-                    <img :class="card.version.variant === 'Foil' ? 'holo' : ''" :src="card.version.frontArt" />
+            <div class="mt-4">
+                <div class="flex">
+                    <div @click="switchTab('deck')" :class="tab === 'deck' ? '' : 'opacity-33'" class="px-2 border-2 border-white cursor-pointer">Deck</div>
+                    <div @click="switchTab('info')" :class="tab === 'info' ? '' : 'opacity-33'" class="ml-2 px-2 border-2 border-white cursor-pointer">Info</div>
+                </div>
+
+                <div>
+                    <div v-if="tab === 'deck'" class="grid grid-cols-3 gap-2 mt-4">
+                        <div v-if="sortedSelectedCards.length > 0"
+                             v-for="card in sortedSelectedCards"
+                             @click="moveToOpen(card.tmp_id)"
+                             class="cursor-pointer hover:ring-2 ring-red-500/50 rounded-lg overflow-hidden">
+                            <img :class="card.version.variant === 'Foil' ? 'holo' : ''" :src="card.version.frontArt" />
+                        </div>
+                    </div>
+
+                    <div v-if="tab === 'info'" class="mt-4">
+                        <div >
+                            <table class="table-auto border-collapse border border-white text-white w-full">
+                                <thead>
+                                <tr>
+                                    <th class="border border-white px-2 py-1">Type</th>
+                                    <th class="border border-white px-2 py-1">Count</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr v-for="trait in typeCounts" :key="trait.name">
+                                    <td class="border border-white px-2 py-1">@{{ trait.name }}</td>
+                                    <td class="border border-white px-2 py-1">@{{ trait.count }}</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div class="mt-4" >
+                            <table class="table-auto border-collapse border border-white text-white w-full">
+                                <thead>
+                                <tr>
+                                    <th class="border border-white px-2 py-1">Arena</th>
+                                    <th class="border border-white px-2 py-1">Count</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr v-for="trait in arenaCounts" :key="trait.name">
+                                    <td class="border border-white px-2 py-1">@{{ trait.name }}</td>
+                                    <td class="border border-white px-2 py-1">@{{ trait.count }}</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div class="mt-4" >
+                            <h2 class="text-xl font-bold mb-2">Costs</h2>
+
+                            <bar-chart
+                                :values="costCounts" :labels="costLabels"
+                            />
+                        </div>
+
+                        <div class="mt-4" >
+                            <table class="table-auto border-collapse border border-white text-white w-full">
+                                <thead>
+                                <tr>
+                                    <th class="border border-white px-2 py-1">Trait</th>
+                                    <th class="border border-white px-2 py-1">Count</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr v-for="trait in traitCounts" :key="trait.name">
+                                    <td class="border border-white px-2 py-1">@{{ trait.name }}</td>
+                                    <td class="border border-white px-2 py-1">@{{ trait.count }}</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
