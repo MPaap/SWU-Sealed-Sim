@@ -21,7 +21,7 @@ class Pack
     public function generate()
     {
         $this->addLeader();
-        $this->addBase();
+//        $this->addBase();
         $this->addCommons(9);
         $this->addUncommons(3);
         $this->addRares(1);
@@ -69,11 +69,13 @@ class Pack
 
     private function addBase()
     {
+        $rarity = 'Common';
+
         // Get Common base
         $cards = Card::inRandomOrder()
             ->where('type', 'base')
-            ->whereHas('versions', function ($query) {
-                $query->where('rarity', 'Common');
+            ->whereHas('versions', function ($query) use ($rarity) {
+                $query->where('rarity', $rarity);
                 $query->where('set_id', $this->set->id);
             })
             ->withData()
@@ -131,7 +133,7 @@ class Pack
             $rarity = 'Legendary';
         }
         $cards = Card::inRandomOrder()
-            ->nonLeaderOrBase()
+            ->nonLeader()
             ->whereHas('versions', function ($query) use ($rarity) {
                 $query->where('rarity', $rarity);
                 $query->where('set_id', $this->set->id);

@@ -3,116 +3,108 @@
         "name": "SWUSEALEDBUILDER"
     },
     "leader": {
-        "id": "SEC_undefined",
+        "id": "SHD_011",
         "count": 1
     },
     "base": {
-        "id": "SEC_019",
+        "id": "SHD_020",
         "count": 1
     },
     "deck": [
         {
-            "id": "SEC_040",
-            "count": 1
-        },
-        {
-            "id": "SEC_072",
-            "count": 1
-        },
-        {
-            "id": "SEC_027",
-            "count": 1
-        },
-        {
-            "id": "SEC_028",
-            "count": 1
-        },
-        {
-            "id": "SEC_070",
-            "count": 1
-        },
-        {
-            "id": "SEC_111",
+            "id": "SHD_075",
             "count": 2
         },
         {
-            "id": "SEC_124",
+            "id": "SHD_095",
             "count": 1
         },
         {
-            "id": "SEC_031",
+            "id": "SHD_029",
             "count": 1
         },
         {
-            "id": "SEC_044",
-            "count": 1
-        },
-        {
-            "id": "SEC_075",
-            "count": 1
-        },
-        {
-            "id": "SEC_096",
-            "count": 1
-        },
-        {
-            "id": "SEC_097",
+            "id": "SHD_040",
             "count": 2
         },
         {
-            "id": "SEC_113",
-            "count": 1
-        },
-        {
-            "id": "SEC_128",
-            "count": 1
-        },
-        {
-            "id": "SEC_129",
-            "count": 1
-        },
-        {
-            "id": "SEC_062",
-            "count": 1
-        },
-        {
-            "id": "SEC_063",
-            "count": 1
-        },
-        {
-            "id": "SEC_098",
-            "count": 1
-        },
-        {
-            "id": "SEC_117",
-            "count": 1
-        },
-        {
-            "id": "SEC_118",
-            "count": 1
-        },
-        {
-            "id": "SEC_067",
+            "id": "SHD_041",
             "count": 2
         },
         {
-            "id": "SEC_036",
+            "id": "SHD_082",
             "count": 1
         },
         {
-            "id": "SEC_048",
+            "id": "SHD_097",
             "count": 1
         },
         {
-            "id": "SEC_049",
+            "id": "SHD_111",
             "count": 1
         },
         {
-            "id": "SEC_066",
+            "id": "SHD_112",
             "count": 2
         },
         {
-            "id": "SEC_102",
+            "id": "SHD_113",
+            "count": 1
+        },
+        {
+            "id": "SHD_114",
+            "count": 2
+        },
+        {
+            "id": "SHD_043",
+            "count": 1
+        },
+        {
+            "id": "SHD_086",
+            "count": 1
+        },
+        {
+            "id": "SHD_115",
+            "count": 1
+        },
+        {
+            "id": "SHD_033",
+            "count": 2
+        },
+        {
+            "id": "SHD_062",
+            "count": 1
+        },
+        {
+            "id": "SHD_087",
+            "count": 1
+        },
+        {
+            "id": "SHD_034",
+            "count": 1
+        },
+        {
+            "id": "SHD_047",
+            "count": 1
+        },
+        {
+            "id": "SHD_065",
+            "count": 1
+        },
+        {
+            "id": "SHD_102",
+            "count": 1
+        },
+        {
+            "id": "SHD_067",
+            "count": 1
+        },
+        {
+            "id": "SHD_089",
+            "count": 1
+        },
+        {
+            "id": "SHD_094",
             "count": 1
         }
     ]

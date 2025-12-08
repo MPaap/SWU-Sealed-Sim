@@ -1,5 +1,9 @@
 @extends('app')
 
+@section('scripts')
+    @vite('resources/js/app.js')
+@endsection
+
 @section('content')
     <div class="grid grid-cols-4" v-if="allCards.length > 0">
         <div class="overflow-y-scroll h-screen col-span-3">
@@ -135,25 +139,39 @@
                 </div>
 
                 <div class="grid grid-cols-7 gap-2 mt-2">
-                    <div v-for="card in sortedOpenCards"
-                         @click="moveToSelected(card.tmp_id)"
-                         class="cursor-pointer hover:ring-2 ring-green-500/50 rounded-lg overflow-hidden">
-                        <img class="" :class="card.version.variant === 'Foil' ? 'holo' : ''" :src="card.version.frontArt" />
+                    <div v-for="card in sortedOpenCards">
+                        <div @click="selectBase(card.version.number)"
+                             v-if="card.type === 'Base'"
+                             :class="selectedBase === getExportCode(card.version.number) ? 'ring-2' : ''"
+                             class="cursor-pointer hover:ring-2 ring-green-500/50 rounded-lg overflow-hidden">
+                            <img class="" :class="card.version.variant === 'Foil' ? 'holo' : ''" :src="card.version.frontArt" />
+                        </div>
+
+                        <div @click="moveToSelected(card.tmp_id)"
+                             v-else
+                             class="cursor-pointer hover:ring-2 ring-green-500/50 rounded-lg overflow-hidden">
+                            <img class="" :class="card.version.variant === 'Foil' ? 'holo' : ''" :src="card.version.frontArt" />
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
 
         <div class="bg-gray-800 p-4 overflow-y-scroll h-screen">
-            <div class="flex justify-between">
-                <div>Deck @{{ selectedCards.length }}</div>
+            <div class="grid grid-cols-5 gap-4">
                 <div>
+                    Deck
+                    <div>@{{ selectedCards.length }}/30</div>
+                </div>
+                <div class="col-span-3">
                     BASE:
-                    <select v-model="selectedBase" class="bg-gray-900 px-2">
-                        <option value="SEC_019">Vigilance</option>
-                        <option value="SEC_021">Command</option>
-                        <option value="SEC_023">Aggression</option>
-                        <option value="SEC_025">Cunning</option>
+                    <select v-model="selectedBase" class="bg-gray-900 px-2 w-full">
+                        <option v-for="card in bases" :value="getExportCode(card.version.number)">
+                            @{{ card.version.rarity }}
+                            - @{{ card.aspects.map(a => a.name).join(", ") }} -
+                            @{{ card.name }}
+                            - HP: @{{ card.health }}
+                        </option>
                     </select>
                 </div>
                 <button class="px-2 border-gray-300 border-2 text-white rounded cursor-pointer" @click="exportToJson">Export</button>

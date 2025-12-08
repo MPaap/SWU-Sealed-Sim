@@ -2,23 +2,8 @@
 
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('sealed');
-});
+Route::get('/', \App\Http\Controllers\HomeController::class);
 
-Route::get('pool/{set}', function ($set) {
-    $set = \App\Models\Set::where('code', $set)->firstOrFail();
+Route::get('sealed/{set:code}', \App\Http\Controllers\SealedController::class)->name('sealed');
 
-    return [
-        (new \App\Helpers\Pack($set)->generate()),
-        (new \App\Helpers\Pack($set)->generate()),
-        (new \App\Helpers\Pack($set)->generate()),
-        (new \App\Helpers\Pack($set)->generate()),
-        (new \App\Helpers\Pack($set)->generate()),
-        (new \App\Helpers\Pack($set)->generate()),
-    ];
-});
-
-Route::get('/random', function () {
-    return \App\Models\Card::with(['arenas', 'aspects', 'versions', 'keywords', 'traits'])->inRandomOrder()->first();
-});
+Route::get('pool/{set:code}', \App\Http\Controllers\PoolController::class)->name('pool');

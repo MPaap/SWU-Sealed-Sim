@@ -34,9 +34,24 @@ class fetchSetData extends Command
     {
         $code = $this->argument('code');
 
-        $set = Set::firstOrCreate(['code' => $code], ['name' => $code]);
+        if ($code === 'all') {
+            foreach (Set::all() as $set) {
+                $this->fetch($set);
+            }
+        } else {
+            $set = Set::firstOrCreate(['code' => $code], ['name' => $code]);
 
-        $result = $this->getDataFromSWUDB($code);
+            if ($set) {
+                $this->fetch($set);
+            }
+        }
+    }
+
+    private function fetch(Set $set)
+    {
+        $this->line("Getting {$set->name} from SWU-DB");
+
+        $result = $this->getDataFromSWUDB($set->code);
 
         $result = json_decode($result, true);
 
@@ -51,6 +66,8 @@ class fetchSetData extends Command
         }
 
         $bar->finish();
+
+        $this->line("Done with {$set->name}!");
     }
 
     private function getDataFromSWUDB(string $code)

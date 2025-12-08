@@ -38,6 +38,11 @@ class Card extends Model
         return $this->hasMany(CardVersion::class);
     }
 
+    public function scopeNonLeader($query)
+    {
+        $query->whereNotIn('type', ['leader']);
+    }
+
     public function scopeNonLeaderOrBase($query)
     {
         $query->whereNotIn('type', ['leader', 'base']);

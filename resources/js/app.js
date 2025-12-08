@@ -8,6 +8,7 @@ createApp({
 
     data() {
         return {
+            set: {},
             pool: [],
             leaders: [],
             bases: [],
@@ -15,7 +16,7 @@ createApp({
             openCards: [],
             selectedCards: [],
             selectedLeader: null,
-            selectedBase: 'SEC_019',
+            selectedBase: null,
             tab: 'deck',
             show: {
                 rarity: ['Common', 'Special', 'Uncommon', 'Rare', 'Legendary'],
@@ -25,8 +26,17 @@ createApp({
     },
 
     mounted() {
-        axios.get('/pool/SEC').then((response) => {
-            this.pool = response.data;
+        axios.get('/pool/'+ this.setCode).then((response) => {
+            this.set = response.data.set;
+            this.pool = response.data.packs;
+
+            response.data.default_bases.forEach((card) => {
+                this.bases.push(card);
+
+                if (this.selectedBase === null) {
+                    this.selectedBase = this.getExportCode(card.version.number);
+                }
+            });
 
             this.pool.forEach((pack) => {
                 pack.forEach((card) => {
@@ -40,6 +50,11 @@ createApp({
 
                         case 'Base':
                             this.bases.push(card);
+                            this.selectedBase = this.getExportCode(card.version.number);
+
+                            this.openCards.push(card);
+                            this.allCards.push(card);
+
                             break;
 
                         default:
@@ -52,6 +67,9 @@ createApp({
     },
 
     methods: {
+        getExportCode(number){
+            return this.setCode + "_" + this.padNumber(number)
+        },
 
         switchTab(name) {
             this.tab = name;
@@ -59,6 +77,10 @@ createApp({
 
         selectLeader(number) {
             this.selectedLeader = number;
+        },
+
+        selectBase(number) {
+            this.selectedBase = this.getExportCode(number);
         },
 
         moveToSelected(uuid) {
@@ -127,7 +149,7 @@ createApp({
             let array = {
                 metadata: { name: "SWUSEALEDBUILDER" },
                 leader: {
-                    id: "SEC_" + this.padNumber(this.selectedLeader),
+                    id: this.getExportCode(this.selectedLeader),
                     count: 1,
                 },
                 base: {
@@ -138,7 +160,7 @@ createApp({
             };
 
             this.selectedCards.forEach((card) => {
-                let id = 'SEC_' + this.padNumber(card.version.number);
+                let id = this.getExportCode(card.version.number);
                 let key = array.deck.findIndex(item => item.id === id);
 
                 if (key > -1) {
@@ -218,9 +240,9 @@ createApp({
         },
         typeCounts() {
             const counts = {
-                unit: 0,
-                event: 0,
-                upgrade: 0,
+                Unit: 0,
+                Event: 0,
+                Upgrade: 0,
             };
 
             this.selectedCards.forEach(card => {
@@ -275,6 +297,12 @@ createApp({
                 .map(([name, count]) => ({ name, count }))
                 .sort((a, b) => a.name.localeCompare(b.name)); // optional: sort alphabetically
         },
+        setCode() {
+            const path = window.location.pathname;
+            const segments = path.split('/').filter(Boolean);
+
+            return segments[1];
+        }
     }
 
 }).mount('#app');
