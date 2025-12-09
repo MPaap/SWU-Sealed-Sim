@@ -57,7 +57,7 @@
     </style>
 </head>
 <body class="bg-gray-900 text-white font-bold">
-    <div id="app" v-cloak>
+    <div id="app">
         @yield('content')
     </div>
 </body>
