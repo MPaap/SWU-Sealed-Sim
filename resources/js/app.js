@@ -5,9 +5,15 @@ import BarChart from './components/BarChart.vue'
 import { toast } from 'vue3-toastify';
 import 'vue3-toastify/dist/index.css';
 
+import { library } from '@fortawesome/fontawesome-svg-core'
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+import { faFilter } from '@fortawesome/free-solid-svg-icons'
+
+library.add(faFilter)
+
 createApp({
 
-    components: { BarChart },
+    components: { BarChart, FontAwesomeIcon },
 
     data() {
         return {
@@ -195,6 +201,16 @@ createApp({
             if (n < 10) return "00" + n;
             if (n < 100) return "0" + n;
             return String(n);
+        },
+
+        countCardsWithAspect(aspectName) {
+            return this.sortedOpenCards.filter(card =>
+                card.aspects.some(a => a.name === aspectName)
+            ).length;
+        },
+
+        countCardsWithRarity(rarity) {
+            return this.sortedOpenCards.filter(card => card.version.rarity === rarity).length;
         }
     },
 
@@ -219,21 +235,6 @@ createApp({
             return this.selectedCards.sort((a, b) => a.cost - b.cost);
         },
 
-        commons() {
-            return this.allCards.filter(card => card.version.rarity === 'Common').length;
-        },
-        uncommons() {
-            return this.allCards.filter(card => card.version.rarity === 'Uncommon').length;
-        },
-        specials() {
-            return this.allCards.filter(card => card.version.rarity === 'Special').length;
-        },
-        rares() {
-            return this.allCards.filter(card => card.version.rarity === 'Rare').length;
-        },
-        legendaries() {
-            return this.allCards.filter(card => card.version.rarity === 'Legendary').length;
-        },
         costCounts() {
             const counts = Array(9).fill(0);
             this.selectedCards.forEach(card => {
