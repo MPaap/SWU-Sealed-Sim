@@ -18,7 +18,7 @@ class PoolController extends Controller
                     $query->where('set_id', $set->id);
                 })
                 ->withData()
-                ->LoadVersionWithVariant()
+                ->LoadVersionWithVariant($set)
                 ->get(),
             'packs' => [
                 (new \App\Helpers\Pack($set)->generate()),

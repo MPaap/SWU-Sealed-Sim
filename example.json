@@ -3,108 +3,44 @@
         "name": "SWUSEALEDBUILDER"
     },
     "leader": {
-        "id": "SHD_011",
+        "id": "SEC_002",
         "count": 1
     },
     "base": {
-        "id": "SHD_020",
+        "id": "SEC_025",
         "count": 1
     },
     "deck": [
         {
-            "id": "SHD_075",
-            "count": 2
-        },
-        {
-            "id": "SHD_095",
+            "id": "SEC_043",
             "count": 1
         },
         {
-            "id": "SHD_029",
+            "id": "SEC_247",
             "count": 1
         },
         {
-            "id": "SHD_040",
-            "count": 2
-        },
-        {
-            "id": "SHD_041",
-            "count": 2
-        },
-        {
-            "id": "SHD_082",
+            "id": "SEC_201",
             "count": 1
         },
         {
-            "id": "SHD_097",
+            "id": "SEC_176",
             "count": 1
         },
         {
-            "id": "SHD_111",
+            "id": "SEC_128",
             "count": 1
         },
         {
-            "id": "SHD_112",
-            "count": 2
-        },
-        {
-            "id": "SHD_113",
+            "id": "SEC_065",
             "count": 1
         },
         {
-            "id": "SHD_114",
-            "count": 2
-        },
-        {
-            "id": "SHD_043",
+            "id": "SEC_102",
             "count": 1
         },
         {
-            "id": "SHD_086",
-            "count": 1
-        },
-        {
-            "id": "SHD_115",
-            "count": 1
-        },
-        {
-            "id": "SHD_033",
-            "count": 2
-        },
-        {
-            "id": "SHD_062",
-            "count": 1
-        },
-        {
-            "id": "SHD_087",
-            "count": 1
-        },
-        {
-            "id": "SHD_034",
-            "count": 1
-        },
-        {
-            "id": "SHD_047",
-            "count": 1
-        },
-        {
-            "id": "SHD_065",
-            "count": 1
-        },
-        {
-            "id": "SHD_102",
-            "count": 1
-        },
-        {
-            "id": "SHD_067",
-            "count": 1
-        },
-        {
-            "id": "SHD_089",
-            "count": 1
-        },
-        {
-            "id": "SHD_094",
+            "id": "SEC_143",
             "count": 1
         }
     ]

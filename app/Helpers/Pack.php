@@ -60,7 +60,7 @@ class Pack
                 $query->where('set_id', $this->set->id);
             })
             ->withData()
-            ->LoadVersionWithVariant($variant)
+            ->LoadVersionWithVariant($this->set, $variant)
             ->limit(1)
             ->get();
 
@@ -70,6 +70,7 @@ class Pack
     private function addBase()
     {
         $rarity = 'Common';
+        $variant = 'normal';
 
         // Get Common base
         $cards = Card::inRandomOrder()
@@ -79,7 +80,7 @@ class Pack
                 $query->where('set_id', $this->set->id);
             })
             ->withData()
-            ->LoadVersionWithVariant()
+            ->LoadVersionWithVariant($this->set)
             ->limit(1)
             ->get();
 
@@ -101,7 +102,7 @@ class Pack
                 $query->where('set_id', $this->set->id);
             })
             ->withData()
-            ->LoadVersionWithVariant()
+            ->LoadVersionWithVariant($this->set)
             ->limit($amount)
             ->get();
 
@@ -118,7 +119,7 @@ class Pack
                 $query->where('set_id', $this->set->id);
             })
             ->withData()
-            ->LoadVersionWithVariant()
+            ->LoadVersionWithVariant($this->set)
             ->limit($amount)
             ->get();
 
@@ -139,7 +140,7 @@ class Pack
                 $query->where('set_id', $this->set->id);
             })
             ->withData()
-            ->LoadVersionWithVariant()
+            ->LoadVersionWithVariant($this->set)
             ->limit($amount)
             ->get();
 
@@ -154,7 +155,7 @@ class Pack
                 $query->where('set_id', $this->set->id);
             })
             ->withData()
-            ->LoadVersionWithVariant('Foil')
+            ->LoadVersionWithVariant($this->set, 'Foil')
             ->limit($amount)
             ->get();
 

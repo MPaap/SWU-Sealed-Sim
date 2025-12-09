@@ -28,7 +28,12 @@ class Card extends Model
         return $this->belongsToMany(CardTrait::class, 'card_trait_pivot', 'card_id', 'trait_id');
     }
 
-    public function version($variant = 'normal'): Card|\Illuminate\Database\Eloquent\Relations\HasOne
+    public function version(): Card|\Illuminate\Database\Eloquent\Relations\HasOne
+    {
+        return $this->hasOne(CardVersion::class);
+    }
+
+    public function normalVersion(): Card|\Illuminate\Database\Eloquent\Relations\HasOne
     {
         return $this->hasOne(CardVersion::class);
     }
@@ -53,10 +58,16 @@ class Card extends Model
         $query->with(['arenas', 'aspects', 'keywords', 'traits']);
     }
 
-    public function scopeLoadVersionWithVariant($query, $variant = 'normal')
+    public function scopeLoadVersionWithVariant($query, Set $set, $variant = 'normal')
     {
-        $query->with(['version' => function ($q) use ($variant) {
+        $query->with(['version' => function ($q) use ($set, $variant) {
             $q->whereVariant($variant);
+            $q->where('set_id', $set->id);
+        }]);
+
+        $query->with(['normalVersion' => function ($q) use ($set, $variant) {
+            $q->whereVariant('normal');
+            $q->where('set_id', $set->id);
         }]);
     }
 }

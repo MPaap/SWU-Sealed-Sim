@@ -2,6 +2,9 @@ import './bootstrap';
 import { createApp } from 'vue'
 import BarChart from './components/BarChart.vue'
 
+import { toast } from 'vue3-toastify';
+import 'vue3-toastify/dist/index.css';
+
 createApp({
 
     components: { BarChart },
@@ -20,12 +23,17 @@ createApp({
             tab: 'deck',
             show: {
                 rarity: ['Common', 'Special', 'Uncommon', 'Rare', 'Legendary'],
-                aspect: ['Villainy', 'Heroism']
+                aspect: ['Villainy', 'Heroism', 'Vigilance', 'Command', 'Aggression', 'Cunning']
             },
         };
     },
 
     mounted() {
+        toast.info("Loading cards", {
+            autoClose: 5000,
+            position: toast.POSITION.BOTTOM_RIGHT,
+        });
+
         axios.get('/pool/'+ this.setCode).then((response) => {
             this.set = response.data.set;
             this.pool = response.data.packs;
@@ -43,14 +51,14 @@ createApp({
                     switch (card.type) {
                         case 'Leader':
                             if (this.selectedLeader === null) {
-                                this.selectedLeader = card.version.number;
+                                this.selectedLeader = card.normal_version.number;
                             }
                             this.leaders.push(card);
                             break;
 
                         case 'Base':
                             this.bases.push(card);
-                            this.selectedBase = this.getExportCode(card.version.number);
+                            this.selectedBase = this.getExportCode(card.normal_version.number);
 
                             this.openCards.push(card);
                             this.allCards.push(card);
@@ -62,6 +70,11 @@ createApp({
                             this.allCards.push(card);
                     }
                 });
+            });
+
+            toast.success("Deck loaded, have fun!", {
+                autoClose: 5000,
+                position: toast.POSITION.BOTTOM_RIGHT,
             });
         });
     },
@@ -160,7 +173,7 @@ createApp({
             };
 
             this.selectedCards.forEach((card) => {
-                let id = this.getExportCode(card.version.number);
+                let id = this.getExportCode(card.normal_version.number);
                 let key = array.deck.findIndex(item => item.id === id);
 
                 if (key > -1) {
@@ -171,6 +184,11 @@ createApp({
             });
 
             navigator.clipboard.writeText(JSON.stringify(array));
+
+            toast.success("Deck copied to clipboard", {
+                autoClose: 5000,
+                position: toast.POSITION.BOTTOM_RIGHT,
+            });
         },
 
         padNumber(n) {
@@ -185,23 +203,16 @@ createApp({
             return this.openCards
                 .filter(card => this.show.rarity.includes(card.version.rarity))
                 .filter(card => {
-                    if (this.show.aspect.length === 2) return true;
+                    const cardAspects = card.aspects.map(a => a.name);
 
-                    const hasFilter = card.aspects.some(a => a.name === this.show.aspect[0]);
-                    const hasHeroism = card.aspects.some(a => a.name === "Heroism");
-                    const hasVillainy = card.aspects.some(a => a.name === "Villainy");
+                    // Card must have ALL its aspects inside the filter array
+                    const allAspectsAllowed = cardAspects.every(a =>
+                        this.show.aspect.includes(a)
+                    );
 
-                    if (this.show.aspect.length === 1) {
-                        return hasFilter || (!hasHeroism && !hasVillainy);
-                    }
-
-                    if (this.show.aspect.length === 0) {
-                        return !card.aspects.some(a =>
-                            a.name === "Heroism" || a.name === "Villainy"
-                        );
-                    }
+                    return allAspectsAllowed;
                 })
-                .sort((a, b) => a.version.number - b.version.number);
+                .sort((a, b) => a.normal_version.number - b.normal_version.number);
         },
 
         sortedSelectedCards() {

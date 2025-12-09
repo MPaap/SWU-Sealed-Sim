@@ -10,9 +10,9 @@
             <div class="p-4">
                 <div class="grid grid-cols-6 gap-4">
                     <div v-for="card in leaders"
-                         @click="selectLeader(card.version.number)"
+                         @click="selectLeader(card.normal_version.number)"
                          class="cursor-pointer hover:ring-2 ring-green-500/50 rounded-lg overflow-hidden"
-                         :class="selectedLeader == card.version.number ? '' : 'opacity-45'">
+                         :class="selectedLeader == card.normal_version.number ? '' : 'opacity-45'">
                         <img class="" :src="card.version.frontArt" />
                     </div>
                 </div>
@@ -37,13 +37,34 @@
                     <div class="p-2 border-2 border-gray-300 cursor-pointer flex justify-center"
                          @click="toggleShow('Villainy', 'aspect')"
                          :class="show.aspect.includes('Villainy') ? '' : 'opacity-33'">
-                        <img class="mr-1 h-[25px]" src="https://cdn.starwarsunlimited.com//medium_SWH_Aspects_Villainy_3e06e5ffdb.png" />
+                        <img class="mr-1 h-[25px]" src="/images/icons/villainy.png" />
                     </div>
                     <div class="p-2 border-2 border-gray-300 cursor-pointer flex justify-center"
                          @click="toggleShow('Heroism', 'aspect')"
                          :class="show.aspect.includes('Heroism') ? '' : 'opacity-33'">
-                        <img class="mr-1 h-[25px]" src="https://cdn.starwarsunlimited.com//medium_SWH_Aspects_Heroism_fd98140fb6.png" />
+                        <img class="mr-1 h-[25px]" src="/images/icons/heroism.png" />
                     </div>
+                    <div class="p-2 border-2 border-gray-300 cursor-pointer flex justify-center"
+                         @click="toggleShow('Vigilance', 'aspect')"
+                         :class="show.aspect.includes('Vigilance') ? '' : 'opacity-33'">
+                        <img class="mr-1 h-[25px]" src="/images/icons/vigilance.png" />
+                    </div>
+                    <div class="p-2 border-2 border-gray-300 cursor-pointer flex justify-center"
+                         @click="toggleShow('Command', 'aspect')"
+                         :class="show.aspect.includes('Command') ? '' : 'opacity-33'">
+                        <img class="mr-1 h-[25px]" src="/images/icons/command.png" />
+                    </div>
+                    <div class="p-2 border-2 border-gray-300 cursor-pointer flex justify-center"
+                         @click="toggleShow('Aggression', 'aspect')"
+                         :class="show.aspect.includes('Aggression') ? '' : 'opacity-33'">
+                        <img class="mr-1 h-[25px]" src="/images/icons/aggression.png" />
+                    </div>
+                    <div class="p-2 border-2 border-gray-300 cursor-pointer flex justify-center"
+                         @click="toggleShow('Cunning', 'aspect')"
+                         :class="show.aspect.includes('Cunning') ? '' : 'opacity-33'">
+                        <img class="mr-1 h-[25px]" src="/images/icons/cunning.png" />
+                    </div>
+
                     <div class="p-2 border-2 border-gray-300 cursor-pointer flex justify-center"
                          @click="toggleShow('Common', 'rarity')"
                          :class="show.rarity.includes('Common') ? '' : 'opacity-33'">C: @{{ commons }}</div>
@@ -143,14 +164,16 @@
                         <div @click="selectBase(card.version.number)"
                              v-if="card.type === 'Base'"
                              :class="selectedBase === getExportCode(card.version.number) ? 'ring-2' : ''"
-                             class="cursor-pointer hover:ring-2 ring-green-500/50 rounded-lg overflow-hidden">
+                             :class="card.version.variant === 'Foil' ? 'holo' : ''"
+                             class="cursor-pointer hover:ring-2 ring-green-500/50 rounded-lg overflow-hidden relative">
                             <img class="" :class="card.version.variant === 'Foil' ? 'holo' : ''" :src="card.version.frontArt" />
                         </div>
 
                         <div @click="moveToSelected(card.tmp_id)"
                              v-else
-                             class="cursor-pointer hover:ring-2 ring-green-500/50 rounded-lg overflow-hidden">
-                            <img class="" :class="card.version.variant === 'Foil' ? 'holo' : ''" :src="card.version.frontArt" />
+                             :class="card.version.variant === 'Foil' ? 'holo' : ''"
+                             class="cursor-pointer hover:ring-2 ring-green-500/50 rounded-lg overflow-hidden relative">
+                            <img class="" :src="card.version.frontArt" />
                         </div>
                     </div>
                 </div>
