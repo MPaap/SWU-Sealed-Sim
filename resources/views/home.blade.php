@@ -26,5 +26,22 @@
         <div class="text-center my-4 font-normal text-sm opacity-50">
             swusealed.com is in no way affiliated with Disney or Fantasy Flight Games. Star Wars characters, cards, logos, and art are property of Disney and/or Fantasy Flight Games.
         </div>
+
+        <div class="flex justify-center font-normal text-sm opacity-33">
+            @auth()
+                <form method="POST" action="{{ route('logout') }}" class="inline">
+                    @csrf
+
+                    <a class="mx-2 hover:text-green-500" href="{{ route('data.pack') }}">Add pack data</a>
+
+                    <button type="submit"
+                            class="cursor-pointer mx-2 hover:text-red-500">
+                        Logout
+                    </button>
+                </form>
+            @else
+                <a href="/login" class="hover:text-blue-500">Login</a>
+            @endif
+        </div>
     </div>
 @endsection

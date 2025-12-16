@@ -35,75 +35,83 @@
 
                 <div class="p-4">
                     <div class="flex">
-                        <div class="p-2 h-[25]">
-                            <font-awesome-icon icon="filter" />
+                        <div class="flex flex-1">
+                            <div class="p-2 h-[25]">
+                                <font-awesome-icon icon="filter" />
+                            </div>
+
+                            <div class="flex-1">
+                                <div class="flex gap-2 text-center">
+                                    <div class="p-2 border-2 border-gray-300 cursor-pointer flex justify-center"
+                                         @click="toggleShow('Villainy', 'aspect')"
+                                         :class="show.aspect.includes('Villainy') ? '' : 'opacity-33'">
+                                        <img class="h-[25px]" src="/images/icons/villainy.png" />
+                                        @{{ countCardsWithAspect('Villainy') }}
+                                    </div>
+                                    <div class="p-2 border-2 border-gray-300 cursor-pointer flex justify-center"
+                                         @click="toggleShow('Heroism', 'aspect')"
+                                         :class="show.aspect.includes('Heroism') ? '' : 'opacity-33'">
+                                        <img class="h-[25px]" src="/images/icons/heroism.png" />
+                                        @{{ countCardsWithAspect('Heroism') }}
+                                    </div>
+                                    <div class="p-2 border-2 border-gray-300 cursor-pointer flex justify-center"
+                                         @click="toggleShow('Vigilance', 'aspect')"
+                                         :class="show.aspect.includes('Vigilance') ? '' : 'opacity-33'">
+                                        <img class="h-[25px]" src="/images/icons/vigilance.png" />
+                                        @{{ countCardsWithAspect('Vigilance') }}
+                                    </div>
+                                    <div class="p-2 border-2 border-gray-300 cursor-pointer flex justify-center"
+                                         @click="toggleShow('Command', 'aspect')"
+                                         :class="show.aspect.includes('Command') ? '' : 'opacity-33'">
+                                        <img class="h-[25px]" src="/images/icons/command.png" />
+                                        @{{ countCardsWithAspect('Command') }}
+                                    </div>
+                                    <div class="p-2 border-2 border-gray-300 cursor-pointer flex justify-center"
+                                         @click="toggleShow('Aggression', 'aspect')"
+                                         :class="show.aspect.includes('Aggression') ? '' : 'opacity-33'">
+                                        <img class="h-[25px]" src="/images/icons/aggression.png" />
+                                        @{{ countCardsWithAspect('Aggression') }}
+                                    </div>
+                                    <div class="p-2 border-2 border-gray-300 cursor-pointer flex justify-center"
+                                         @click="toggleShow('Cunning', 'aspect')"
+                                         :class="show.aspect.includes('Cunning') ? '' : 'opacity-33'">
+                                        <img class="h-[25px]" src="/images/icons/cunning.png" />
+                                        @{{ countCardsWithAspect('Cunning') }}
+                                    </div>
+
+                                    <div class="p-2 border-2 border-gray-300 cursor-pointer flex justify-center"
+                                         @click="toggleShow('Common', 'rarity')"
+                                         :class="show.rarity.includes('Common') ? '' : 'opacity-33'">
+                                        <img class="h-[25px]" src="/images/icons/common.png" />
+                                        @{{ countCardsWithRarity('Common') }}</div>
+                                    <div class="p-2 border-2 border-gray-300 cursor-pointer flex justify-center"
+                                         @click="toggleShow('Uncommon', 'rarity')"
+                                         :class="show.rarity.includes('Uncommon') ? '' : 'opacity-33'">
+                                        <img class="h-[25px]" src="/images/icons/uncommon.png" />
+                                        @{{ countCardsWithRarity('Uncommon') }}</div>
+                                    <div class="p-2 border-2 border-gray-300 cursor-pointer flex justify-center"
+                                         @click="toggleShow('Rare', 'rarity')"
+                                         :class="show.rarity.includes('Rare') ? '' : 'opacity-33'">
+                                        <img class="h-[25px]" src="/images/icons/rare.png" />
+                                        @{{ countCardsWithRarity('Rare') }}</div>
+                                    <div class="p-2 border-2 border-gray-300 cursor-pointer flex justify-center"
+                                         @click="toggleShow('Legendary', 'rarity')"
+                                         :class="show.rarity.includes('Legendary') ? '' : 'opacity-33'">
+                                        <img class="h-[25px]" src="/images/icons/legendary.png" />
+                                        @{{ countCardsWithRarity('Legendary') }}</div>
+                                    <div class="p-2 border-2 border-gray-300 cursor-pointer flex justify-center"
+                                         @click="toggleShow('Special', 'rarity')"
+                                         :class="show.rarity.includes('Special') ? '' : 'opacity-33'">
+                                        <img class="h-[25px]" src="/images/icons/special.png" />
+                                        @{{ countCardsWithRarity('Special') }}</div>
+                                </div>
+                            </div>
                         </div>
 
-                        <div class="flex-1">
-                            <div class="flex gap-2 text-center">
-                                <div class="p-2 border-2 border-gray-300 cursor-pointer flex justify-center"
-                                     @click="toggleShow('Villainy', 'aspect')"
-                                     :class="show.aspect.includes('Villainy') ? '' : 'opacity-33'">
-                                    <img class="h-[25px]" src="/images/icons/villainy.png" />
-                                    @{{ countCardsWithAspect('Villainy') }}
-                                </div>
-                                <div class="p-2 border-2 border-gray-300 cursor-pointer flex justify-center"
-                                     @click="toggleShow('Heroism', 'aspect')"
-                                     :class="show.aspect.includes('Heroism') ? '' : 'opacity-33'">
-                                    <img class="h-[25px]" src="/images/icons/heroism.png" />
-                                    @{{ countCardsWithAspect('Heroism') }}
-                                </div>
-                                <div class="p-2 border-2 border-gray-300 cursor-pointer flex justify-center"
-                                     @click="toggleShow('Vigilance', 'aspect')"
-                                     :class="show.aspect.includes('Vigilance') ? '' : 'opacity-33'">
-                                    <img class="h-[25px]" src="/images/icons/vigilance.png" />
-                                    @{{ countCardsWithAspect('Vigilance') }}
-                                </div>
-                                <div class="p-2 border-2 border-gray-300 cursor-pointer flex justify-center"
-                                     @click="toggleShow('Command', 'aspect')"
-                                     :class="show.aspect.includes('Command') ? '' : 'opacity-33'">
-                                    <img class="h-[25px]" src="/images/icons/command.png" />
-                                    @{{ countCardsWithAspect('Command') }}
-                                </div>
-                                <div class="p-2 border-2 border-gray-300 cursor-pointer flex justify-center"
-                                     @click="toggleShow('Aggression', 'aspect')"
-                                     :class="show.aspect.includes('Aggression') ? '' : 'opacity-33'">
-                                    <img class="h-[25px]" src="/images/icons/aggression.png" />
-                                    @{{ countCardsWithAspect('Aggression') }}
-                                </div>
-                                <div class="p-2 border-2 border-gray-300 cursor-pointer flex justify-center"
-                                     @click="toggleShow('Cunning', 'aspect')"
-                                     :class="show.aspect.includes('Cunning') ? '' : 'opacity-33'">
-                                    <img class="h-[25px]" src="/images/icons/cunning.png" />
-                                    @{{ countCardsWithAspect('Cunning') }}
-                                </div>
-
-                                <div class="p-2 border-2 border-gray-300 cursor-pointer flex justify-center"
-                                     @click="toggleShow('Common', 'rarity')"
-                                     :class="show.rarity.includes('Common') ? '' : 'opacity-33'">
-                                    <img class="h-[25px]" src="/images/icons/common.png" />
-                                    @{{ countCardsWithRarity('Common') }}</div>
-                                <div class="p-2 border-2 border-gray-300 cursor-pointer flex justify-center"
-                                     @click="toggleShow('Uncommon', 'rarity')"
-                                     :class="show.rarity.includes('Uncommon') ? '' : 'opacity-33'">
-                                    <img class="h-[25px]" src="/images/icons/uncommon.png" />
-                                    @{{ countCardsWithRarity('Uncommon') }}</div>
-                                <div class="p-2 border-2 border-gray-300 cursor-pointer flex justify-center"
-                                     @click="toggleShow('Rare', 'rarity')"
-                                     :class="show.rarity.includes('Rare') ? '' : 'opacity-33'">
-                                    <img class="h-[25px]" src="/images/icons/rare.png" />
-                                    @{{ countCardsWithRarity('Rare') }}</div>
-                                <div class="p-2 border-2 border-gray-300 cursor-pointer flex justify-center"
-                                     @click="toggleShow('Legendary', 'rarity')"
-                                     :class="show.rarity.includes('Legendary') ? '' : 'opacity-33'">
-                                    <img class="h-[25px]" src="/images/icons/legendary.png" />
-                                    @{{ countCardsWithRarity('Legendary') }}</div>
-                                <div class="p-2 border-2 border-gray-300 cursor-pointer flex justify-center"
-                                     @click="toggleShow('Special', 'rarity')"
-                                     :class="show.rarity.includes('Special') ? '' : 'opacity-33'">
-                                    <img class="h-[25px]" src="/images/icons/special.png" />
-                                    @{{ countCardsWithRarity('Special') }}</div>
-                            </div>
+                        <div class="">
+                            <a title="Home" href="{{ route('home') }}" class="p-2 border-2 border-gray-300 hover:border-green-500 hover:text-green-500 cursor-pointer"><font-awesome-icon icon="home" /></a>
+                            <a title="New sealed pool" class="ml-2 p-2 border-2 border-gray-300 hover:border-green-500 hover:text-green-500 cursor-pointer" href="{{ url()->current() }}"><font-awesome-icon icon="refresh" /></a>
+                            <button title="Share current pool" class="ml-2 p-2 border-2 border-gray-300 hover:border-green-500 hover:text-green-500 cursor-pointer font-normal" @click="shareSeed"><font-awesome-icon icon="share"></font-awesome-icon></button>
                         </div>
                     </div>
 

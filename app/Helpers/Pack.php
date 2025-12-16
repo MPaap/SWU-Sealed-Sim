@@ -6,16 +6,25 @@ use App\Models\Card;
 use App\Models\Set;
 use Illuminate\Support\Collection;
 use Ramsey\Uuid\Uuid;
+use Random\Engine\Mt19937;
+use Random\Randomizer;
 
+// @todo check if randomness is real
 class Pack
 {
     public \Illuminate\Support\Collection $cards;
     public Set $set;
+    private int $seed;
+    private Randomizer $rng;
 
-    public function __construct(Set $set)
+    public function __construct(Set $set, $seed)
     {
         $this->cards = collect();
         $this->set = $set;
+        $this->seed = $seed;
+
+        $engine = new Mt19937($this->seed);
+        $this->rng = new Randomizer($engine);
     }
 
     public function generate()
@@ -43,17 +52,17 @@ class Pack
     {
         // Get 1 random X rarity leader
         $rarity = 'Common';
-        if (rand(1, 8) === 1) { // Find real odds
+        if ($this->rng->getInt(1, 8) === 1) { // Find real odds
             $rarity = 'rare';
         }
 
         // Get 1 random X rarity leader
         $variant = 'Normal';
-        if (rand(1, (12*24)) === 1) { // Find real odds
+        if ($this->rng->getInt(1, (12*24)) === 1) { // Find real odds
             $variant = 'Showcase';
         }
 
-        $cards = Card::inRandomOrder()
+        $cards = Card::orderByRaw('CRC32(CONCAT(id, ?))', [$this->seed])
             ->where('type', 'leader')
             ->whereHas('versions', function ($query) use ($rarity) {
                 $query->where('rarity', $rarity);
@@ -73,7 +82,7 @@ class Pack
         $variant = 'normal';
 
         // Get Common base
-        $cards = Card::inRandomOrder()
+        $cards = Card::orderByRaw('CRC32(CONCAT(id, ?))', [$this->seed])
             ->where('type', 'base')
             ->whereHas('versions', function ($query) use ($rarity) {
                 $query->where('rarity', $rarity);
@@ -90,12 +99,12 @@ class Pack
     private function addCommons(int $amount)
     {
         $rarity = 'Common';
-        if (rand(1, 20) === 1) { // Find real odds
+        if ($this->rng->getInt(1, 20) === 1) { // Find real odds
             $rarity = 'Special';
         }
 
         // Get 9 random commons
-        $cards = Card::inRandomOrder()
+        $cards = Card::orderByRaw('CRC32(CONCAT(id, ?))', [$this->seed])
             ->nonLeaderOrBase()
             ->whereHas('versions', function ($query) use ($rarity) {
                 $query->whereIn('rarity', [$rarity]);
@@ -112,7 +121,7 @@ class Pack
     private function addUncommons(int $amount)
     {
         // Get 3 random uncommons
-        $cards = Card::inRandomOrder()
+        $cards = Card::orderByRaw('CRC32(CONCAT(id, ?))', [$this->seed])
             ->nonLeaderOrBase()
             ->whereHas('versions', function ($query) {
                 $query->where('rarity', 'Uncommon');
@@ -130,10 +139,10 @@ class Pack
     {
         // Get 1 random X rarity leader
         $rarity = 'Rare';
-        if (rand(1, 8) === 1) { // Find real odds
+        if ($this->rng->getInt(1, 8) === 1) { // Find real odds
             $rarity = 'Legendary';
         }
-        $cards = Card::inRandomOrder()
+        $cards = Card::orderByRaw('CRC32(CONCAT(id, ?))', [$this->seed])
             ->nonLeader()
             ->whereHas('versions', function ($query) use ($rarity) {
                 $query->where('rarity', $rarity);
@@ -149,7 +158,7 @@ class Pack
 
     private function addFoils(int $amount)
     {
-        $cards = Card::inRandomOrder()
+        $cards = Card::orderByRaw('CRC32(CONCAT(id, ?))', [$this->seed])
             ->nonLeaderOrBase()
             ->whereHas('versions', function ($query) {
                 $query->where('set_id', $this->set->id);

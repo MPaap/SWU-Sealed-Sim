@@ -7,9 +7,12 @@ import 'vue3-toastify/dist/index.css';
 
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
-import { faFilter } from '@fortawesome/free-solid-svg-icons'
+import { faFilter, faShare, faRefresh, faHome } from '@fortawesome/free-solid-svg-icons'
 
 library.add(faFilter)
+library.add(faShare)
+library.add(faRefresh)
+library.add(faHome)
 
 createApp({
 
@@ -17,6 +20,7 @@ createApp({
 
     data() {
         return {
+            seed: null,
             set: {},
             pool: [],
             leaders: [],
@@ -40,7 +44,15 @@ createApp({
             position: toast.POSITION.BOTTOM_RIGHT,
         });
 
-        axios.get('/pool/'+ this.setCode).then((response) => {
+        const seed = new URLSearchParams(location.search).get('seed') ?? null;
+
+        let url = '/pool/'+ this.setCode;
+        if (seed) {
+            url += '?seed=' + seed;
+        }
+
+        axios.get(url).then((response) => {
+            this.seed = response.data.seed;
             this.set = response.data.set;
             this.pool = response.data.packs;
 
@@ -162,6 +174,21 @@ createApp({
             } else {
                 this.show[key].push(string);
             }
+        },
+
+        shareSeed()
+        {
+            const url = new URL(window.location.href);
+            url.search = '';
+
+            const cleanUrl = url.toString();
+
+            navigator.clipboard.writeText(cleanUrl + '?seed=' + this.seed);
+
+            toast.success("Link copied to clipboard", {
+                autoClose: 5000,
+                position: toast.POSITION.BOTTOM_RIGHT,
+            });
         },
 
         exportToJson() {
