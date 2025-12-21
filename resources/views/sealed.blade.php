@@ -13,7 +13,10 @@
                         <div v-for="card in leaders"
                              @click="selectLeader(card.normal_version.number)"
                              class="cursor-pointer hover:ring-2 ring-green-500/50 rounded-lg overflow-hidden"
-                             :class="selectedLeader == card.normal_version.number ? '' : 'opacity-45'">
+                             :class="[
+                                selectedLeader == card.normal_version.number ? '' : 'opacity-45',
+                                card.foil ? 'holo' : ''
+                             ]">
                             <img class="" :src="card.version.frontArt" />
                         </div>
                     </div>
@@ -196,14 +199,14 @@
                             <div @click="selectBase(card.version.number)"
                                  v-if="card.type === 'Base'"
                                  :class="selectedBase === getExportCode(card.version.number) ? 'ring-2' : ''"
-                                 :class="card.version.variant === 'Foil' ? 'holo' : ''"
+                                 :class="card.foil ? 'holo' : ''"
                                  class="cursor-pointer hover:ring-2 ring-green-500/50 rounded-lg overflow-hidden relative">
-                                <img class="" :class="card.version.variant === 'Foil' ? 'holo' : ''" :src="card.version.frontArt" />
+                                <img class="" :class="card.foil ? 'holo' : ''" :src="card.version.frontArt" />
                             </div>
 
                             <div @click="moveToSelected(card.tmp_id)"
                                  v-else
-                                 :class="card.version.variant === 'Foil' ? 'holo' : ''"
+                                 :class="card.foil ? 'holo' : ''"
                                  class="cursor-pointer hover:ring-2 ring-green-500/50 rounded-lg overflow-hidden relative">
                                 <img class="" :src="card.version.frontArt" />
                             </div>
@@ -243,7 +246,7 @@
                                  v-for="card in sortedSelectedCards"
                                  @click="moveToOpen(card.tmp_id)"
                                  class="cursor-pointer hover:ring-2 ring-red-500/50 rounded-lg overflow-hidden">
-                                <img :class="card.version.variant === 'Foil' ? 'holo' : ''" :src="card.version.frontArt" />
+                                <img :class="card.foil ? 'holo' : ''" :src="card.version.frontArt" />
                             </div>
                         </div>
 
