@@ -19,6 +19,15 @@
             @endforeach
         </div>
 
+        <div class="text-center my-8">
+            <h2 class="text-xl">Pools Generated</h2>
+
+            <div class="flex justify-center">
+                <div class="p-4 text-center">All time<br>{{ $generated['all'] }}</div>
+                <div class="p-4 text-center">Last 7 Days<br>{{ $generated['recent'] }}</div>
+            </div>
+        </div>
+
         <div class="text-center my-4">
             Help contribute on <a target="_blank" class="text-blue-500 underline" href="https://github.com/MPaap/SWU-Sealed-Sim">Github</a>.
         </div>

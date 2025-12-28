@@ -16,7 +16,6 @@ class Pack
     public Set $set;
     private int $seed;
     private Randomizer $rng;
-    private array $selectedIds = [];
 
     public function __construct(Set $set, $seed)
     {
@@ -68,7 +67,6 @@ class Pack
     {
         $cards->each(function ($card) use ($cards) {
             $card->tmp_id = Uuid::uuid1()->toString();
-            $this->selectedIds[] = $card->id;
         });
 
         $this->cards = $this->cards->merge($cards);
@@ -83,7 +81,7 @@ class Pack
             $variant = 'Showcase';
         }
 
-        $cards = Card::orderByRaw('CRC32(CONCAT(id, ?))', [$this->seed])
+        $cards = Card::inRandomOrder($this->seed)
             ->where('type', 'leader')
             ->whereHas('versions', function ($query) use ($rarity) {
                 $query->where('rarity', $rarity)
@@ -107,7 +105,7 @@ class Pack
         $variant = 'normal';
 
         // Get Common base
-        $cards = Card::orderByRaw('CRC32(CONCAT(id, ?))', [$this->seed])
+        $cards = Card::inRandomOrder($this->seed)
             ->where('type', 'base')
             ->whereHas('versions', function ($query) use ($rarity) {
                 $query->where('rarity', $rarity);
@@ -127,13 +125,12 @@ class Pack
 
     private function addCommons(int $amount)
     {
-        $cards = Card::orderByRaw('CRC32(CONCAT(id, ?))', [$this->seed])
+        $cards = Card::inRandomOrder($this->seed)
             ->nonLeaderOrBase()
             ->whereHas('versions', function ($query) {
                 $query->where('rarity', 'Common');
                 $query->where('set_id', $this->set->id);
             })
-            ->whereNotIn('id', $this->selectedIds)
             ->withData()
             ->LoadVersionWithVariant($this->set)
             ->limit($amount)
@@ -148,13 +145,12 @@ class Pack
 
     private function addUncommons(int $amount)
     {
-        $cards = Card::orderByRaw('CRC32(CONCAT(id, ?))', [$this->seed])
+        $cards = Card::inRandomOrder($this->seed)
             ->nonLeaderOrBase()
             ->whereHas('versions', function ($query) {
                 $query->where('rarity', 'Uncommon');
                 $query->where('set_id', $this->set->id);
             })
-            ->whereNotIn('id', $this->selectedIds)
             ->withData()
             ->LoadVersionWithVariant($this->set)
             ->limit($amount)
@@ -174,13 +170,12 @@ class Pack
         if ($this->rng->getInt(1, 8) === 1) { // Find real odds
             $rarity = 'Legendary';
         }
-        $cards = Card::orderByRaw('CRC32(CONCAT(id, ?))', [$this->seed])
+        $cards = Card::inRandomOrder($this->seed)
             ->nonLeader()
             ->whereHas('versions', function ($query) use ($rarity) {
                 $query->where('rarity', $rarity);
                 $query->where('set_id', $this->set->id);
             })
-            ->whereNotIn('id', $this->selectedIds)
             ->withData()
             ->LoadVersionWithVariant($this->set)
             ->limit($amount)
@@ -211,13 +206,12 @@ class Pack
             $rarity = ['Legendary'];
         }
 
-        $cards = Card::orderByRaw('CRC32(CONCAT(id, ?))', [$this->seed])
+        $cards = Card::inRandomOrder($this->seed + 999)
             ->nonLeaderOrBase()
             ->whereHas('versions', function ($query) use ($rarity) {
                 $query->where('set_id', $this->set->id)
                     ->whereIn('rarity', $rarity);
             })
-            ->whereNotIn('id', $this->selectedIds)
             ->withData()
             ->LoadVersionWithVariant($this->set, 'Foil')
             ->limit($amount)
@@ -241,13 +235,12 @@ class Pack
             $variant = 'Hyperspace Foil';
         }
 
-        $cards = Card::orderByRaw('CRC32(CONCAT(id, ?))', [$this->seed])
+        $cards = Card::inRandomOrder($this->seed + 250)
             ->nonLeaderOrBase()
             ->whereHas('versions', function ($query) use ($rarities) {
                 $query->where('set_id', $this->set->id);
                 $query->whereIn('rarity', $rarities);
             })
-            ->whereNotIn('id', $this->selectedIds)
             ->withData()
             ->LoadVersionWithVariant($this->set, $variant)
             ->limit($amount)

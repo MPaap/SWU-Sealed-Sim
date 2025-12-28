@@ -13,15 +13,22 @@ class PoolController extends Controller
 {
     public function __invoke(Set $set)
     {
-        $baseSeed = request('seed', rand(1000,9999999));
+        $randomness = [
+            'min' => 1000,
+            'max' => 999999999999999999
+        ];
+
+        $baseSeed = request('seed', (int) (microtime(true) * 1000));
         $engine = new Mt19937($baseSeed);
         $rng = new Randomizer($engine);
 
         $packs = [];
         for ($i = 0; $i < 6; $i++) {
-            $packSeed = $rng->getInt(1000000, 9999999); // unique-ish seed per pack
+            $packSeed = $rng->getInt($randomness['min'], $randomness['max']); // unique-ish seed per pack
             $packs[] = (new \App\Helpers\Pack($set, $packSeed))->generate();
         }
+
+        $set->poolLogs()->create(['seed' => $baseSeed]);
 
         return [
             'seed' => $baseSeed,

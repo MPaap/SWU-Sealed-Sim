@@ -107,6 +107,16 @@
                                          :class="show.rarity.includes('Special') ? '' : 'opacity-33'">
                                         <img class="h-[25px]" src="/images/icons/special.png" />
                                         @{{ countCardsWithRarity('Special') }}</div>
+
+                                    <div class="p-2 border-2 border-gray-300 cursor-pointer flex justify-center">
+                                        <div>
+                                            <font-awesome-icon icon="sort"></font-awesome-icon>
+                                        </div>
+                                        <select v-model="sort_by" class="bg-gray-900 px-2 w-full">
+                                            <option value="number">Number</option>
+                                            <option value="cost">Cost</option>
+                                        </select>
+                                    </div>
                                 </div>
                             </div>
                         </div>

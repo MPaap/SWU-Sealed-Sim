@@ -7,12 +7,13 @@ import 'vue3-toastify/dist/index.css';
 
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
-import { faFilter, faShare, faRefresh, faHome } from '@fortawesome/free-solid-svg-icons'
+import { faFilter, faShare, faRefresh, faHome, faSort } from '@fortawesome/free-solid-svg-icons'
 
 library.add(faFilter)
 library.add(faShare)
 library.add(faRefresh)
 library.add(faHome)
+library.add(faSort)
 
 createApp({
 
@@ -31,6 +32,7 @@ createApp({
             selectedLeader: null,
             selectedBase: null,
             tab: 'deck',
+            sort_by: 'number',
             show: {
                 rarity: ['Common', 'Special', 'Uncommon', 'Rare', 'Legendary'],
                 aspect: ['Villainy', 'Heroism', 'Vigilance', 'Command', 'Aggression', 'Cunning']
@@ -243,7 +245,7 @@ createApp({
 
     computed: {
         sortedOpenCards() {
-            return this.openCards
+            let cards = this.openCards
                 .filter(card => this.show.rarity.includes(card.version.rarity))
                 .filter(card => {
                     const cardAspects = card.aspects.map(a => a.name);
@@ -255,7 +257,14 @@ createApp({
 
                     return allAspectsAllowed;
                 })
-                .sort((a, b) => a.normal_version.number - b.normal_version.number);
+
+            cards.sort((a, b) => a.normal_version.number - b.normal_version.number);
+
+            if (this.sort_by === 'cost') {
+                cards.sort((a, b) => a.cost - b.cost);
+            }
+
+            return cards;
         },
 
         sortedSelectedCards() {
