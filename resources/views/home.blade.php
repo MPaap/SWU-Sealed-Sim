@@ -6,6 +6,10 @@
     </div>
 
     <div class="container mx-auto">
+        <div class="flex justify-center my-4">
+            <img src="/images/logos/logo.svg" />
+        </div>
+
         <div class="text-center my-4">
             Sealed Simulator for Star Wars Unlimited to help practice and win your local and PQ Limited events!
         </div>
@@ -36,7 +40,7 @@
             swusealed.com is in no way affiliated with Disney or Fantasy Flight Games. Star Wars characters, cards, logos, and art are property of Disney and/or Fantasy Flight Games.
         </div>
 
-        <div class="flex justify-center font-normal text-sm opacity-33">
+        <div class="flex justify-center font-normal text-sm opacity-33 my-4">
             @auth()
                 <form method="POST" action="{{ route('logout') }}" class="inline">
                     @csrf
