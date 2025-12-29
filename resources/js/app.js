@@ -1,5 +1,5 @@
 import './bootstrap';
-import { createApp } from 'vue'
+import { createApp, ref } from 'vue'
 import BarChart from './components/BarChart.vue'
 
 import { toast } from 'vue3-toastify';
@@ -7,17 +7,52 @@ import 'vue3-toastify/dist/index.css';
 
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
-import { faFilter, faShare, faRefresh, faHome, faSort } from '@fortawesome/free-solid-svg-icons'
+import { faFilter, faShare, faRefresh, faSort } from '@fortawesome/free-solid-svg-icons'
 
 library.add(faFilter)
 library.add(faShare)
 library.add(faRefresh)
-library.add(faHome)
 library.add(faSort)
+
+import { useFloating, autoUpdate, offset, flip, shift } from '@floating-ui/vue';
 
 createApp({
 
     components: { BarChart, FontAwesomeIcon },
+
+    setup() {
+        const reference = ref(null);
+        const floating = ref(null);
+        const isVisible = ref(false);
+        const activeCard = ref(null);
+
+        const { floatingStyles } = useFloating(reference, floating, {
+            whileElementsMounted: autoUpdate,
+            placement: 'right',
+            middleware: [offset(10), flip(), shift()],
+        });
+
+        const showTooltip = (event, card) => {
+            reference.value = event.currentTarget;
+            activeCard.value = card;
+            isVisible.value = true;
+        };
+
+        const hideTooltip = () => {
+            isVisible.value = false;
+        };
+
+        // 2. Everything returned here is available in your HTML
+        return {
+            reference,
+            floating,
+            isVisible,
+            activeCard,
+            floatingStyles,
+            showTooltip,
+            hideTooltip
+        };
+    },
 
     data() {
         return {

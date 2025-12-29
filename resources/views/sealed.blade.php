@@ -11,13 +11,16 @@
                 <div class="p-4">
                     <div class="grid grid-cols-6 gap-4">
                         <div v-for="card in leaders"
+                             :key="card.normal_version.number"
+                             @mouseenter="showTooltip($event, card)"
+                             @mouseleave="hideTooltip"
                              @click="selectLeader(card.normal_version.number)"
-                             class="cursor-pointer hover:ring-2 ring-green-500/50 rounded-lg overflow-hidden"
+                             class="cursor-pointer hover:ring-2 ring-green-500/50 rounded-lg overflow-hidden transition-opacity"
                              :class="[
-                                selectedLeader == card.normal_version.number ? '' : 'opacity-45',
-                                card.foil ? 'holo' : ''
-                             ]">
-                            <img class="" :src="card.version.frontArt" />
+            selectedLeader == card.normal_version.number ? '' : 'opacity-45',
+            card.foil ? 'holo' : ''
+         ]">
+                            <img :src="card.version.frontArt" />
                         </div>
                     </div>
                 </div>
@@ -205,21 +208,34 @@
                     </div>
 
                     <div class="grid grid-cols-9 gap-2 mt-2">
-                        <div v-for="card in sortedOpenCards">
-                            <div @click="selectBase(card.version.number)"
-                                 v-if="card.type === 'Base'"
-                                 :class="selectedBase === getExportCode(card.version.number) ? 'ring-2' : ''"
-                                 :class="card.foil ? 'holo' : ''"
-                                 class="cursor-pointer hover:ring-2 ring-green-500/50 rounded-lg overflow-hidden relative">
-                                <img class="" :class="card.foil ? 'holo' : ''" :src="card.version.frontArt" />
+                        <div v-for="card in sortedOpenCards" :key="card.tmp_id">
+                            <div
+                                @mouseenter="showTooltip($event, card)"
+                                @mouseleave="hideTooltip"
+                                @click="card.type === 'Base' ? selectBase(card.version.number) : moveToSelected(card.tmp_id)"
+                                :class="[
+          'cursor-pointer hover:ring-2 ring-green-500/50 rounded-lg overflow-hidden relative',
+          card.foil ? 'holo' : '',
+          selectedBase === getExportCode(card.version.number) ? 'ring-2' : ''
+        ]"
+                            >
+                                <img :class="card.foil ? 'holo' : ''" :src="card.version.frontArt"/>
                             </div>
+                        </div>
+                    </div>
 
-                            <div @click="moveToSelected(card.tmp_id)"
-                                 v-else
-                                 :class="card.foil ? 'holo' : ''"
-                                 class="cursor-pointer hover:ring-2 ring-green-500/50 rounded-lg overflow-hidden relative">
-                                <img class="" :src="card.version.frontArt" />
-                            </div>
+                    <div
+                        v-if="isVisible"
+                        ref="floating"
+                        :style="floatingStyles"
+                        class="z-50 pointer-events-none flex flex-col gap-2"
+                    >
+                        <div v-if="activeCard" class="flex gap-2">
+                            <img
+                                v-if="activeCard"
+                                :src="activeCard.type === 'Leader' ? activeCard.version.backArt : activeCard.version.frontArt"
+                                class="w-72 shadow-2xl rounded-xl border-2 border-gray-700"
+                            />
                         </div>
                     </div>
                 </div>
