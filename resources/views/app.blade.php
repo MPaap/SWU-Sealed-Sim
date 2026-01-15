@@ -32,9 +32,9 @@
                 120deg,
                 rgba(0, 255, 255, 0.0) 0%,
                 rgba(0, 255, 255, 0.25) 10%,
-                rgba(255, 255, 255, 0.55) 15%,
-                rgba(0, 255, 255, 0.25) 35%,
-                rgba(0, 255, 255, 0.0) 50%
+                rgba(255, 255, 255, 0.55) 35%,
+                rgba(0, 255, 255, 0.25) 45%,
+                rgba(0, 255, 255, 0.0) 70%
             );
             mix-blend-mode: screen;
             transform: translateX(0) rotate(0deg);
@@ -49,8 +49,8 @@
             background: conic-gradient(
                 from 0deg,
                 rgba(0, 180, 255, 0.1),
-                rgba(255, 0, 200, 0.1),
-                rgba(255, 255, 0, 0.1),
+                rgba(255, 0, 200, 0.4),
+                rgba(255, 255, 0, 0.2),
                 rgba(0, 180, 255, 0.1)
             );
             mix-blend-mode: color-dodge;

@@ -219,7 +219,7 @@
           selectedBase === getExportCode(card.version.number) ? 'ring-2' : ''
         ]"
                             >
-                                <img :class="card.foil ? 'holo' : ''" :src="card.version.frontArt"/>
+                                <img class="rounded-lg overflow-hidden" :src="card.version.frontArt"/>
                             </div>
                         </div>
                     </div>

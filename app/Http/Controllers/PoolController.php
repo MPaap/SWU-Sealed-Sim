@@ -25,7 +25,7 @@ class PoolController extends Controller
         $packs = [];
         for ($i = 0; $i < 6; $i++) {
             $packSeed = $rng->getInt($randomness['min'], $randomness['max']); // unique-ish seed per pack
-            $packs[] = (new \App\Helpers\Pack($set, $packSeed))->generate();
+            $packs[] = $set->generatePack($packSeed);
         }
 
         $set->poolLogs()->create(['seed' => $baseSeed]);

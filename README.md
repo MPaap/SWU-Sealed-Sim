@@ -16,3 +16,13 @@ To get fetch all the data after migration and seeding.
 ``
 php artisan app:fetch-set all
 ``
+
+
+### TODOS
+
+- Remove Packdata, fun but not really needed
+- Mobile mode
+- User login
+- - Seed history
+- - Exported Decklist History
+- - Export link for Karabast instead of json

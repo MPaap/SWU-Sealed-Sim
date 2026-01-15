@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Helpers;
+namespace App\Services\Packs;
 
+use App\Contracts\PackStrategy;
 use App\Models\Card;
 use App\Models\Set;
 use Illuminate\Support\Collection;
@@ -9,15 +10,14 @@ use Ramsey\Uuid\Uuid;
 use Random\Engine\Mt19937;
 use Random\Randomizer;
 
-// @todo check if randomness is real
-class Pack
+class JTLPackStrategy implements PackStrategy
 {
     public \Illuminate\Support\Collection $cards;
     public Set $set;
     private int $seed;
     private Randomizer $rng;
 
-    public function __construct(Set $set, $seed)
+    public function config(Set $set, $seed): PackStrategy
     {
         $this->cards = collect();
         $this->set = $set;
@@ -25,9 +25,11 @@ class Pack
 
         $engine = new Mt19937($this->seed);
         $this->rng = new Randomizer($engine);
+
+        return $this;
     }
 
-    public function generate()
+    public function generate(): Collection
     {
         $this->addLeader();
 //        $this->addBase();
@@ -39,11 +41,7 @@ class Pack
         if ($this->rng->getInt(1, 3) <= 2) {
             // Conditional: Hyperspace Rare/Legendary/Special ~1 in 15
             if ($this->rng->getInt(1, 15) === 15) {
-                // Only include Special if set >= certain ID
-                $hyperspaceRarities = ['rare', 'legendary'];
-                if ($this->set->id >= Set::SPECIAL_START_SET_ID) {
-                    $hyperspaceRarities[] = 'special';
-                }
+                $hyperspaceRarities = ['rare', 'legendary', 'special'];
                 $hyperspace = $hyperspaceRarities;
             } else {
                 $hyperspace = ['common', 'uncommon'];
@@ -198,10 +196,7 @@ class Pack
         } elseif ($roll <= 90) {
             $rarity = ['Uncommon'];
         } elseif ($roll <= 98) {
-            $rarity = ['Rare'];
-            if ($this->set->id >= Set::SPECIAL_START_SET_ID) {
-                $rarity[] = 'Special';
-            }
+            $rarity = ['Rare', 'special'];
         } else {
             $rarity = ['Legendary'];
         }
