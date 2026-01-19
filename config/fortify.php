@@ -130,7 +130,7 @@ return [
     |
     */
 
-    'views' => true,
+    'views' => false,
 
     /*
     |--------------------------------------------------------------------------
@@ -144,14 +144,14 @@ return [
     */
 
     'features' => [
-        Features::registration(),
+//        Features::registration(),
 //        Features::emailVerification(),
-        // Features::confirmPasswords(), // disabled
+        // Features::confirmPasswords(),
 //        Features::registration(),
 //        Features::resetPasswords(),
         // Features::emailVerification(),
-        Features::updateProfileInformation(),
-        Features::updatePasswords(),
+//        Features::updateProfileInformation(),
+//        Features::updatePasswords(),
 //        Features::twoFactorAuthentication([
 //            'confirm' => true,
 //            'confirmPassword' => true,
