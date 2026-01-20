@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::table('users', function (Blueprint $table) {
             $table->string('google_id')->nullable();
             $table->dropColumn('password');
+            $table->dropColumn('email_verified_at')->nullable();
         });
 
         \App\Models\User::query()->truncate();
@@ -26,7 +27,8 @@ return new class extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
             $table->dropColumn('google_id');
-            $table->string('password'); // Password can be null for social users
+            $table->string('password');
+//            $table->timestamp('email_verified_at')->nullable();
         });
     }
 };

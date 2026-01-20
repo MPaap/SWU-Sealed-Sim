@@ -26,7 +26,7 @@ php artisan app:fetch-set all
 - - :heavy_check_mark: Login with Google
 - - Login with Discord
 - - Login with GitHub
-- - Seed history
+- - :heavy_check_mark: Seed history
 - - Exported Decklist History
 - - Export link for Karabast instead of json
 

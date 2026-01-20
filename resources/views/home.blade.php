@@ -5,14 +5,19 @@
         Smaller screen friendly version is coming some day...
     </div>
 
+    @include('navigation')
+
     <div class="container mx-auto">
-        <div class="flex justify-center my-4">
-            <img src="/images/logos/logo.svg" />
-        </div>
 
         <div class="text-center my-4">
             Sealed Simulator for Star Wars Unlimited to help practice and win your local and PQ Limited events!
         </div>
+
+        @guest
+            <div class="text-center my-4 font-normal text-gray-400">
+                Login to keep track of all Sealed pools you ever created and share them with your friends.
+            </div>
+        @endguest
 
         <div class="grid grid-cols-3 gap-4">
             @foreach($sets as $set)
@@ -38,21 +43,6 @@
 
         <div class="text-center my-4 font-normal text-sm opacity-50">
             swusealed.com is in no way affiliated with Disney or Fantasy Flight Games. Star Wars characters, cards, logos, and art are property of Disney and/or Fantasy Flight Games.
-        </div>
-
-        <div class="flex justify-center font-normal text-sm opacity-33 my-4">
-            @auth()
-                <form method="POST" action="{{ route('logout') }}" class="inline">
-                    @csrf
-
-                    <button type="submit"
-                            class="cursor-pointer mx-2 hover:text-red-500">
-                        Logout
-                    </button>
-                </form>
-            @else
-                <a href="{{ route('auth.google') }}" class="hover:text-blue-500">Login with Google</a>
-            @endif
         </div>
     </div>
 @endsection

@@ -28,7 +28,16 @@ class PoolController extends Controller
             $packs[] = $set->generatePack($packSeed);
         }
 
-        $set->poolLogs()->create(['seed' => $baseSeed]);
+        $createLog = true;
+        if (auth()) {
+            if (auth()->user()->poolLogs()->where('set_id', $set->id)->where('seed', $baseSeed)->exists()) {
+                $createLog = false;
+            }
+        }
+
+        if ($createLog) {
+            $set->poolLogs()->create(['seed' => $baseSeed, 'user_id' => auth()->id()]);
+        }
 
         return [
             'seed' => $baseSeed,
