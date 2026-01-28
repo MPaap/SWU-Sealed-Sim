@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Deck;
 use App\Models\PoolLog;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;

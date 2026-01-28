@@ -3,11 +3,15 @@
         <div class="flex justify-between items-center">
             <div class="flex items-center">
                 <a href="{{ route('home') }}" class="p-4">
-                    <img class="h-8" src="images/logos/logo.svg" />
+                    <img class="h-8" src="/images/logos/logo.svg" />
                 </a>
 
-                <a href="{{ route('dashboard') }}" class="p-4 hover:bg-gray-700">
+                <a href="{{ route('auth.pool') }}" class="p-4 hover:bg-gray-700">
                     Pool history
+                </a>
+
+                <a href="{{ route('auth.deck') }}" class="p-4 hover:bg-gray-700">
+                    Saved Decks
                 </a>
             </div>
 

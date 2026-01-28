@@ -49,4 +49,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(PoolLog::class);
     }
+
+    public function decks(): HasMany
+    {
+        return $this->hasMany(Deck::class);
+    }
 }

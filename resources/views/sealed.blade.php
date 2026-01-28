@@ -1,7 +1,7 @@
 @extends('app')
 
 @section('scripts')
-    @vite('resources/js/app.js')
+    @vite('resources/js/sealed.js')
 @endsection
 
 @section('content')
@@ -128,6 +128,7 @@
                             <a title="Home" href="{{ route('home') }}" class="flex justify-center p-2 border-2 border-gray-300 hover:border-green-700 cursor-pointer"><img src="/images/logos/logo.svg" class="h-[25px] inline" /></a>
                             <a title="New sealed pool" class="ml-2 p-2 border-2 border-gray-300 hover:border-green-700 cursor-pointer" href="{{ url()->current() }}"><font-awesome-icon icon="refresh" /></a>
                             <button title="Share current pool" class="ml-2 p-2 border-2 border-gray-300 hover:border-green-700 cursor-pointer font-normal" @click="shareSeed"><font-awesome-icon icon="share"></font-awesome-icon></button>
+                            <button title="Save current decklist" class="ml-2 p-2 border-2 border-gray-300 hover:border-green-700 cursor-pointer font-normal" @click="saveDeck"><font-awesome-icon icon="floppy-disk"></font-awesome-icon></button>
                         </div>
                     </div>
 
@@ -258,7 +259,10 @@
                             </option>
                         </select>
                     </div>
-                    <button class="px-2 border-gray-300 border-2 text-white rounded cursor-pointer" @click="exportToJson">Export</button>
+
+                    <button class="px-2 border-gray-300 border-2 text-white rounded cursor-pointer" @click="exportToJson">
+                        <font-awesome-icon icon="file-arrow-down"></font-awesome-icon> Copy
+                    </button>
                 </div>
                 <div class="mt-4">
                     <div class="flex">

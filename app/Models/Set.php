@@ -14,6 +14,11 @@ class Set extends Model
         return $this->hasMany(PoolLog::class);
     }
 
+    public function cardVersions()
+    {
+        return $this->hasMany(CardVersion::class);
+    }
+
     public function generatePack(int $seed)
     {
         return PackFactory::make($this)->config($this, $seed)->generate();

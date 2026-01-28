@@ -15,7 +15,7 @@
 
         @guest
             <div class="text-center my-4 font-normal text-gray-400">
-                Login to keep track of all Sealed pools you ever created and share them with your friends.
+                Login to keep track of all Sealed pools you ever created, save your decklists and share them with your friends.
             </div>
         @endguest
 
@@ -37,12 +37,6 @@
             </div>
         </div>
 
-        <div class="text-center my-4">
-            Help contribute on <a target="_blank" class="text-blue-500 underline" href="https://github.com/MPaap/SWU-Sealed-Sim">Github</a>.
-        </div>
-
-        <div class="text-center my-4 font-normal text-sm opacity-50">
-            swusealed.com is in no way affiliated with Disney or Fantasy Flight Games. Star Wars characters, cards, logos, and art are property of Disney and/or Fantasy Flight Games.
-        </div>
+        @include('footer')
     </div>
 @endsection

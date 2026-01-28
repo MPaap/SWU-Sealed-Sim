@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Card;
+use App\Models\CardVersion;
 use App\Models\Set;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Random\Engine\Mt19937;
 use Random\Randomizer;
@@ -29,7 +31,7 @@ class PoolController extends Controller
         }
 
         $createLog = true;
-        if (auth()) {
+        if (auth()->user()) {
             if (auth()->user()->poolLogs()->where('set_id', $set->id)->where('seed', $baseSeed)->exists()) {
                 $createLog = false;
             }
@@ -52,5 +54,56 @@ class PoolController extends Controller
                 ->get(),
             'packs' => $packs
         ];
+    }
+
+    public function save(Request $request, Set $set, $seed)
+    {
+        $errors = [];
+
+        if (! auth()->user()) {
+            $errors[] = 'You need to login to save your deck';
+        }
+
+        if (count($request->deck) < 30) {
+            $errors[] = 'Your deck needs te be at least 30 cards';
+        }
+
+        if (! $request->leader) {
+            $errors[] = 'Select a leader';
+        }
+
+        if (! $request->base) {
+            $errors[] = 'Select a base';
+        }
+
+        if (count($errors) > 0) {
+            return response()->json([
+                'errors' => $errors
+            ], 401);
+        }
+
+        DB::transaction(function () use ($request, $set, $seed) {
+            $deck = auth()->user()->decks()->create([
+                'set_id' => $set->id,
+                'seed' => $seed,
+                'leader_card_version_id' => $this->findVersionIdBySetCode($request->leader, $set),
+                'base_card_version_id' => $this->findVersionIdBySetCode($request->base, $set),
+            ]);
+
+            foreach ($request->deck as $card) {
+                $deck->cardVersions()->attach($card['version']['id']);
+            }
+        });
+
+        return ['message' => 'Deck saved.'];
+    }
+
+    private function findVersionIdBySetCode($string, Set $set)
+    {
+        list($setCode, $number) = explode('_', $string);
+
+        $version = $set->cardVersions()->where('number', $number)->firstOrFail();
+
+        return $version->id;
     }
 }
