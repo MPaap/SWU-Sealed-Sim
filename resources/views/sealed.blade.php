@@ -213,11 +213,11 @@
                             <div
                                 @mouseenter="showTooltip($event, card)"
                                 @mouseleave="hideTooltip"
-                                @click="card.type === 'Base' ? selectBase(card.version.number) : moveToSelected(card.tmp_id)"
+                                @click="card.type === 'Base' ? selectBase(card) : moveToSelected(card.tmp_id)"
                                 :class="[
           'cursor-pointer hover:ring-2 ring-green-500/50 rounded-lg overflow-hidden relative',
           card.foil ? 'holo' : '',
-          selectedBase === getExportCode(card.version.number) ? 'ring-2' : ''
+          selectedBase.tmp_id === card.tmp_id ? 'ring-2' : ''
         ]"
                             >
                                 <img class="rounded-lg overflow-hidden" :src="card.version.frontArt"/>
@@ -249,25 +249,70 @@
                         <div>@{{ selectedCards.length }}/30</div>
                     </div>
                     <div class="col-span-3">
-                        BASE:
-                        <select v-model="selectedBase" class="bg-gray-900 px-2 w-full">
-                            <option v-for="card in bases" :value="getExportCode(card.version.number)">
-                                @{{ card.version.rarity }}
-                                - @{{ card.aspects.map(a => a.name).join(", ") }} -
-                                @{{ card.name }}
-                                - HP: @{{ card.health }}
-                            </option>
-                        </select>
+                        <div class="rounded border-2 border-white relative cursor-pointer hover:border-green-700"
+                             tabindex="0"
+                             @click="basesSelect = !basesSelect"
+                             @blur="basesSelect = false"
+                             >
+                            <div class="flex justify-between pt-2 px-4 opacity-50 text-sm">
+                                <div class="">Base:</div>
+                                <div><font-awesome-icon icon="caret-down" /></div>
+                            </div>
+                            <div class="flex pb-2 px-4" v-if="selectedBase">
+                                <div>
+                                    <img :src="'/images/icons/' + selectedBase.version.rarity.toLowerCase() +'.png'" class="w-5 h-5 mr-1 object-contain rounded" />
+                                </div>
+                                <div v-for="aspect in selectedBase.aspects">
+                                    <img :src="'/images/icons/' + aspect.name.toLowerCase() +'.png'" class="w-5 h-5 mr-2 object-contain rounded" />
+                                </div>
+                                <span class="text-sm font-medium truncate w-full truncate">
+                                  <span class="font-bold">@{{ selectedBase.health }}HP</span> @{{ selectedBase.name }}
+                                </span>
+                            </div>
+
+                            <transition
+                                enter-active-class="transition ease-out duration-100"
+                                enter-from-class="transform opacity-0 scale-95"
+                                enter-to-class="transform opacity-100 scale-100"
+                                leave-active-class="transition ease-in duration-75"
+                                leave-from-class="transform opacity-100 scale-100"
+                                leave-to-class="transform opacity-0 scale-95"
+                            >
+                                <div v-if="basesSelect"
+                                    class="absolute z-10 w-full mt-1 bg-white border border-gray-200 rounded-md shadow-lg max-h-60 overflow-auto focus:outline-none"
+                                >
+                                    <ul class="py-1">
+                                        <li
+                                            v-for="card in bases"
+                                            :key="card.version.number"
+                                            @mousedown.prevent
+                                            @click="selectBase(card)"
+                                            class="object-contain flex items-center px-2 py-2 cursor-pointer hover:bg-gray-800 hover:text-white group transition-colors"
+                                        >
+                                            <div>
+                                                <img :src="'/images/icons/' + card.version.rarity.toLowerCase() +'.png'" class="w-5 h-5 mr-1 object-contain rounded" />
+                                            </div>
+                                            <div v-for="aspect in card.aspects">
+                                                <img :src="'/images/icons/' + aspect.name.toLowerCase() +'.png'" class="w-5 h-5 mr-2 object-contain rounded" />
+                                            </div>
+                                            <span class="text-sm font-medium text-gray-900 group-hover:text-white truncate w-full">
+                                              <span class="font-bold">@{{ card.health }}HP</span> @{{ card.name }}
+                                            </span>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </transition>
+                        </div>
                     </div>
 
-                    <button class="px-2 border-gray-300 border-2 text-white rounded cursor-pointer" @click="exportToJson">
+                    <button class="px-2 border-gray-300 border-2 text-white rounded cursor-pointer hover:border-green-700" @click="exportToJson">
                         <font-awesome-icon icon="file-arrow-down"></font-awesome-icon> Copy
                     </button>
                 </div>
                 <div class="mt-4">
                     <div class="flex">
-                        <div @click="switchTab('deck')" :class="tab === 'deck' ? '' : 'opacity-33'" class="px-2 border-2 border-white cursor-pointer">Deck</div>
-                        <div @click="switchTab('info')" :class="tab === 'info' ? '' : 'opacity-33'" class="ml-2 px-2 border-2 border-white cursor-pointer">Info</div>
+                        <div @click="switchTab('deck')" :class="tab === 'deck' ? '' : 'opacity-33'" class="px-2 border-2 border-white cursor-pointer hover:border-green-700">Deck</div>
+                        <div @click="switchTab('info')" :class="tab === 'info' ? '' : 'opacity-33'" class="ml-2 px-2 border-2 border-white cursor-pointer hover:border-green-700">Info</div>
                     </div>
 
                     <div>

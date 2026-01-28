@@ -7,7 +7,7 @@ import 'vue3-toastify/dist/index.css';
 
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
-import { faFilter, faShare, faRefresh, faSort, faFileArrowDown, faFloppyDisk } from '@fortawesome/free-solid-svg-icons'
+import { faFilter, faShare, faRefresh, faSort, faFileArrowDown, faFloppyDisk, faCaretDown } from '@fortawesome/free-solid-svg-icons'
 
 library.add(faFilter)
 library.add(faShare)
@@ -15,6 +15,7 @@ library.add(faRefresh)
 library.add(faSort)
 library.add(faFileArrowDown)
 library.add(faFloppyDisk)
+library.add(faCaretDown)
 
 import { useFloating, autoUpdate, offset, flip, shift } from '@floating-ui/vue';
 
@@ -74,6 +75,7 @@ createApp({
                 rarity: ['Common', 'Special', 'Uncommon', 'Rare', 'Legendary'],
                 aspect: ['Villainy', 'Heroism', 'Vigilance', 'Command', 'Aggression', 'Cunning']
             },
+            basesSelect: false,
         };
     },
 
@@ -95,14 +97,6 @@ createApp({
             this.set = response.data.set;
             this.pool = response.data.packs;
 
-            response.data.default_bases.forEach((card) => {
-                this.bases.push(card);
-
-                if (this.selectedBase === null) {
-                    this.selectedBase = this.getExportCode(card.version.number);
-                }
-            });
-
             this.pool.forEach((pack) => {
                 pack.forEach((card) => {
                     switch (card.type) {
@@ -115,7 +109,7 @@ createApp({
 
                         case 'Base':
                             this.bases.push(card);
-                            this.selectedBase = this.getExportCode(card.normal_version.number);
+                            this.selectedBase = card;
 
                             this.openCards.push(card);
                             this.allCards.push(card);
@@ -127,6 +121,14 @@ createApp({
                             this.allCards.push(card);
                     }
                 });
+            });
+
+            response.data.default_bases.forEach((card) => {
+                this.bases.push(card);
+
+                if (this.selectedBase === null) {
+                    this.selectedBase = card;
+                }
             });
 
             toast.success("Deck loaded, have fun!", {
@@ -149,8 +151,8 @@ createApp({
             this.selectedLeader = number;
         },
 
-        selectBase(number) {
-            this.selectedBase = this.getExportCode(number);
+        selectBase(card) {
+            this.selectedBase = card;
         },
 
         moveToSelected(uuid) {
@@ -238,7 +240,7 @@ createApp({
                     count: 1,
                 },
                 base: {
-                    id: this.selectedBase,
+                    id: this.getExportCode(this.selectedBase.normal_version.number),
                     count: 1,
                 },
                 deck: [],
@@ -266,7 +268,7 @@ createApp({
         saveDeck() {
             axios.post('/pool/' + this.setCode + '/' + this.seed, {
                 leader: this.getExportCode(this.selectedLeader),
-                base: this.selectedBase,
+                base: this.getExportCode(this.selectedBase.normal_version.number),
                 deck: this.selectedCards
             }).then(response => {
                 toast.success("Deck has been saved", {
@@ -297,7 +299,7 @@ createApp({
 
         countCardsWithRarity(rarity) {
             return this.sortedOpenCards.filter(card => card.version.rarity === rarity).length;
-        }
+        },
     },
 
     computed: {
