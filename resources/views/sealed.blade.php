@@ -14,10 +14,10 @@
                              :key="card.normal_version.number"
                              @mouseenter="showTooltip($event, card)"
                              @mouseleave="hideTooltip"
-                             @click="selectLeader(card.normal_version.number)"
+                             @click="selectLeader(card)"
                              class="cursor-pointer hover:ring-2 ring-green-500/50 rounded-lg overflow-hidden transition-opacity"
                              :class="[
-            selectedLeader == card.normal_version.number ? '' : 'opacity-45',
+            selectedLeader.tmp_id == card.tmp_id ? '' : 'opacity-45',
             card.foil ? 'holo' : ''
          ]">
                             <img :src="card.version.frontArt" />

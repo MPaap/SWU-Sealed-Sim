@@ -101,10 +101,11 @@ createApp({
                 pack.forEach((card) => {
                     switch (card.type) {
                         case 'Leader':
-                            if (this.selectedLeader === null) {
-                                this.selectedLeader = card.normal_version.number;
-                            }
                             this.leaders.push(card);
+
+                            if (this.selectedLeader === null) {
+                                this.selectedLeader = card;
+                            }
                             break;
 
                         case 'Base':
@@ -147,8 +148,8 @@ createApp({
             this.tab = name;
         },
 
-        selectLeader(number) {
-            this.selectedLeader = number;
+        selectLeader(card) {
+            this.selectedLeader = card;
         },
 
         selectBase(card) {
@@ -236,7 +237,7 @@ createApp({
             let data = {
                 metadata: { name: "swusealed.com - " + this.setCode +" - " + this.seed },
                 leader: {
-                    id: this.getExportCode(this.selectedLeader),
+                    id: this.getExportCode(this.selectedLeader.normal_version.number),
                     count: 1,
                 },
                 base: {
@@ -267,7 +268,7 @@ createApp({
 
         saveDeck() {
             axios.post('/pool/' + this.setCode + '/' + this.seed, {
-                leader: this.getExportCode(this.selectedLeader),
+                leader: this.getExportCode(this.selectedLeader.version.number),
                 base: this.getExportCode(this.selectedBase.normal_version.number),
                 deck: this.selectedCards
             }).then(response => {
