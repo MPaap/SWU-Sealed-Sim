@@ -9,7 +9,7 @@
         <div class="grid grid-cols-4" v-if="allCards.length > 0">
             <div class="overflow-y-scroll h-screen col-span-3">
                 <div class="p-4">
-                    <div class="grid gap-4" :class="'grid-cols-' + leaders.length">
+                    <div class="grid gap-4" :class="leaders.length > 6 ? 'grid-cols-4' : 'grid-cols-6'">
                         <div v-for="card in leaders"
                              :key="card.normal_version.number"
                              @mouseenter="showTooltip($event, card)"
