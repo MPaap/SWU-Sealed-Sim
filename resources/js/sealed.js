@@ -7,7 +7,7 @@ import 'vue3-toastify/dist/index.css';
 
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
-import { faFilter, faShare, faRefresh, faSort, faFileArrowDown, faFloppyDisk, faCaretDown } from '@fortawesome/free-solid-svg-icons'
+import { faFilter, faShare, faRefresh, faSort, faFileArrowDown, faFloppyDisk, faCaretDown, faPlus } from '@fortawesome/free-solid-svg-icons'
 
 library.add(faFilter)
 library.add(faShare)
@@ -16,6 +16,7 @@ library.add(faSort)
 library.add(faFileArrowDown)
 library.add(faFloppyDisk)
 library.add(faCaretDown)
+library.add(faPlus)
 
 import { useFloating, autoUpdate, offset, flip, shift } from '@floating-ui/vue';
 
@@ -301,6 +302,18 @@ createApp({
         countCardsWithRarity(rarity) {
             return this.sortedOpenCards.filter(card => card.version.rarity === rarity).length;
         },
+
+        addPrereleaseLeaders()
+        {
+            if (this.leaders.length < 8) {
+                axios.get('/pool-prerelease-leaders/' + this.setCode)
+                    .then((response) => {
+                        response.data.forEach((card) => {
+                            this.leaders.push(card);
+                        })
+                    })
+            }
+        }
     },
 
     computed: {

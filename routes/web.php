@@ -7,6 +7,7 @@ Route::get('/', \App\Http\Controllers\HomeController::class)->name('home');
 Route::get('sealed/{set:code}', \App\Http\Controllers\SealedController::class)->name('sealed');
 
 Route::get('pool/{set:code}', \App\Http\Controllers\PoolController::class)->name('pool');
+Route::get('pool-prerelease-leaders/{set:code}', [\App\Http\Controllers\PoolController::class, 'prereleaseLeaders'])->name('pool.prerelease.leaders');
 Route::post('pool/{set:code}/{seed}', [\App\Http\Controllers\PoolController::class, 'save'])->name('pool.save');
 
 Route::get('login', \App\Http\Controllers\Auth\LoginController::class)->name('login');

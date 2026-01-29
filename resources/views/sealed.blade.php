@@ -5,11 +5,11 @@
 @endsection
 
 @section('content')
-    <div v-cloak>
+    <div class="select-none" v-cloak>
         <div class="grid grid-cols-4" v-if="allCards.length > 0">
             <div class="overflow-y-scroll h-screen col-span-3">
                 <div class="p-4">
-                    <div class="grid grid-cols-6 gap-4">
+                    <div class="grid gap-4" :class="'grid-cols-' + leaders.length">
                         <div v-for="card in leaders"
                              :key="card.normal_version.number"
                              @mouseenter="showTooltip($event, card)"
@@ -48,64 +48,64 @@
 
                             <div class="flex-1">
                                 <div class="flex gap-2 text-center">
-                                    <div class="p-2 border-2 border-gray-300 cursor-pointer flex justify-center hover:border-green-700"
+                                    <div class="w-[65px] p-2 border-2 border-gray-300 cursor-pointer flex justify-between hover:border-green-700"
                                          @click="toggleShow('Villainy', 'aspect')"
                                          :class="show.aspect.includes('Villainy') ? '' : 'opacity-33'">
                                         <img class="h-[25px]" src="/images/icons/villainy.png" />
                                         @{{ countCardsWithAspect('Villainy') }}
                                     </div>
-                                    <div class="p-2 border-2 border-gray-300 cursor-pointer flex justify-center hover:border-green-700"
+                                    <div class="w-[65px] p-2 border-2 border-gray-300 cursor-pointer flex justify-between hover:border-green-700"
                                          @click="toggleShow('Heroism', 'aspect')"
                                          :class="show.aspect.includes('Heroism') ? '' : 'opacity-33'">
                                         <img class="h-[25px]" src="/images/icons/heroism.png" />
                                         @{{ countCardsWithAspect('Heroism') }}
                                     </div>
-                                    <div class="p-2 border-2 border-gray-300 cursor-pointer flex justify-center hover:border-green-700"
+                                    <div class="w-[65px] p-2 border-2 border-gray-300 cursor-pointer flex justify-between hover:border-green-700"
                                          @click="toggleShow('Vigilance', 'aspect')"
                                          :class="show.aspect.includes('Vigilance') ? '' : 'opacity-33'">
                                         <img class="h-[25px]" src="/images/icons/vigilance.png" />
                                         @{{ countCardsWithAspect('Vigilance') }}
                                     </div>
-                                    <div class="p-2 border-2 border-gray-300 cursor-pointer flex justify-center hover:border-green-700"
+                                    <div class="w-[65px] p-2 border-2 border-gray-300 cursor-pointer flex justify-between hover:border-green-700"
                                          @click="toggleShow('Command', 'aspect')"
                                          :class="show.aspect.includes('Command') ? '' : 'opacity-33'">
                                         <img class="h-[25px]" src="/images/icons/command.png" />
                                         @{{ countCardsWithAspect('Command') }}
                                     </div>
-                                    <div class="p-2 border-2 border-gray-300 cursor-pointer flex justify-center hover:border-green-700"
+                                    <div class="w-[65px] p-2 border-2 border-gray-300 cursor-pointer flex justify-between hover:border-green-700"
                                          @click="toggleShow('Aggression', 'aspect')"
                                          :class="show.aspect.includes('Aggression') ? '' : 'opacity-33'">
                                         <img class="h-[25px]" src="/images/icons/aggression.png" />
                                         @{{ countCardsWithAspect('Aggression') }}
                                     </div>
-                                    <div class="p-2 border-2 border-gray-300 cursor-pointer flex justify-center hover:border-green-700"
+                                    <div class="w-[65px] p-2 border-2 border-gray-300 cursor-pointer flex justify-between hover:border-green-700"
                                          @click="toggleShow('Cunning', 'aspect')"
                                          :class="show.aspect.includes('Cunning') ? '' : 'opacity-33'">
                                         <img class="h-[25px]" src="/images/icons/cunning.png" />
                                         @{{ countCardsWithAspect('Cunning') }}
                                     </div>
 
-                                    <div class="p-2 border-2 border-gray-300 cursor-pointer flex justify-center hover:border-green-700"
+                                    <div class="w-[65px] p-2 border-2 border-gray-300 cursor-pointer flex justify-between hover:border-green-700"
                                          @click="toggleShow('Common', 'rarity')"
                                          :class="show.rarity.includes('Common') ? '' : 'opacity-33'">
                                         <img class="h-[25px]" src="/images/icons/common.png" />
                                         @{{ countCardsWithRarity('Common') }}</div>
-                                    <div class="p-2 border-2 border-gray-300 cursor-pointer flex justify-center hover:border-green-700"
+                                    <div class="w-[65px] p-2 border-2 border-gray-300 cursor-pointer flex justify-between hover:border-green-700"
                                          @click="toggleShow('Uncommon', 'rarity')"
                                          :class="show.rarity.includes('Uncommon') ? '' : 'opacity-33'">
                                         <img class="h-[25px]" src="/images/icons/uncommon.png" />
                                         @{{ countCardsWithRarity('Uncommon') }}</div>
-                                    <div class="p-2 border-2 border-gray-300 cursor-pointer flex justify-center hover:border-green-700"
+                                    <div class="w-[65px] p-2 border-2 border-gray-300 cursor-pointer flex justify-between hover:border-green-700"
                                          @click="toggleShow('Rare', 'rarity')"
                                          :class="show.rarity.includes('Rare') ? '' : 'opacity-33'">
                                         <img class="h-[25px]" src="/images/icons/rare.png" />
                                         @{{ countCardsWithRarity('Rare') }}</div>
-                                    <div class="p-2 border-2 border-gray-300 cursor-pointer flex justify-center hover:border-green-700"
+                                    <div class="w-[65px] p-2 border-2 border-gray-300 cursor-pointer flex justify-between hover:border-green-700"
                                          @click="toggleShow('Legendary', 'rarity')"
                                          :class="show.rarity.includes('Legendary') ? '' : 'opacity-33'">
                                         <img class="h-[25px]" src="/images/icons/legendary.png" />
                                         @{{ countCardsWithRarity('Legendary') }}</div>
-                                    <div class="p-2 border-2 border-gray-300 cursor-pointer flex justify-center hover:border-green-700"
+                                    <div class="w-[65px] p-2 border-2 border-gray-300 cursor-pointer flex justify-between hover:border-green-700"
                                          @click="toggleShow('Special', 'rarity')"
                                          :class="show.rarity.includes('Special') ? '' : 'opacity-33'">
                                         <img class="h-[25px]" src="/images/icons/special.png" />
@@ -120,6 +120,14 @@
                                             <option value="cost">Cost</option>
                                         </select>
                                     </div>
+
+                                    <button title="Add Prerelease Leaders"
+                                            v-if="leaders.length < 8"
+                                            @click="addPrereleaseLeaders"
+                                            class="p-2 cursor-pointer mr-2 flex items-center border-2 border-white hover:border-green-700">
+                                        <font-awesome-icon icon="plus"></font-awesome-icon>
+                                        <img class="h-[25px] inline" src="/images/icons/special.png" />
+                                    </button>
                                 </div>
                             </div>
                         </div>

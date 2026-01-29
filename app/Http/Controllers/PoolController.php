@@ -8,6 +8,7 @@ use App\Models\Set;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
+use Ramsey\Uuid\Uuid;
 use Random\Engine\Mt19937;
 use Random\Randomizer;
 
@@ -105,5 +106,24 @@ class PoolController extends Controller
         $version = $set->cardVersions()->where('number', $number)->firstOrFail();
 
         return $version->id;
+    }
+
+    public function prereleaseLeaders(Set $set)
+    {
+        $cards = Card::where('type', 'leader')
+            ->whereHas('versions', function ($query) use ($set) {
+                $query->where('rarity', 'Special')
+                    ->where('set_id', $set->id);
+            })
+            ->withData()
+            ->LoadVersionWithVariant($set, 'Normal')
+            ->get();
+
+        $cards->each(function ($card) use ($cards) {
+            $card->foil = (Str::contains($card->version->variant, ['Foil', 'Showcase']));
+            $card->tmp_id = Uuid::uuid1()->toString();
+        });
+
+        return $cards;
     }
 }
