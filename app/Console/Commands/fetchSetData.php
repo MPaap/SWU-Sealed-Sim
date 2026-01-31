@@ -18,7 +18,7 @@ class fetchSetData extends Command
      *
      * @var string
      */
-    protected $signature = 'app:fetch-set {code}';
+    protected $signature = 'app:fetch-set';
 
     /**
      * The console command description.
@@ -32,14 +32,21 @@ class fetchSetData extends Command
      */
     public function handle()
     {
-        $code = $this->argument('code');
+        $code = $this->ask('code');
 
         if ($code === 'all') {
             foreach (Set::all() as $set) {
                 $this->fetch($set);
             }
         } else {
-            $set = Set::firstOrCreate(['code' => $code], ['name' => $code]);
+            $name = $this->ask('name');
+
+            $set = Set::firstOrCreate(['code' => $code], ['name' => $name]);
+
+            if ($set->name != $name) {
+                $set->name = $name;
+                $set->save();
+            }
 
             if ($set) {
                 $this->fetch($set);

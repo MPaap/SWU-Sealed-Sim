@@ -19,8 +19,17 @@
             </div>
         @endguest
 
-        <div class="grid grid-cols-3 gap-4">
-            @foreach($sets as $set)
+        <div class="grid grid-cols-2 gap-4">
+            @foreach($sets->take(2) as $set)
+                <a href="{{ route('sealed', $set->code) }}" class="rounded-xl overflow-hidden opacity-50 hover:opacity-100">
+                    <img src="/images/backgrounds/{{ $set->code }}.png" />
+                    <div class="text-center">{{ $set->name }}</div>
+                </a>
+            @endforeach
+        </div>
+
+        <div class="grid grid-cols-5 gap-4 mt-4">
+            @foreach($sets->skip(2) as $set)
                 <a href="{{ route('sealed', $set->code) }}" class="rounded-xl overflow-hidden opacity-50 hover:opacity-100">
                     <img src="/images/backgrounds/{{ $set->code }}.png" />
                     <div class="text-center">{{ $set->name }}</div>

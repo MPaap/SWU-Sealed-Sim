@@ -24,7 +24,7 @@ class GoogleController extends Controller
             // No password needed for social login
         ]);
 
-        Auth::login($user);
+        Auth::login($user, true);
 
         return redirect()->intended('/');
     }
