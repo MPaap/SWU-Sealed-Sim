@@ -86,7 +86,7 @@ class SORPackStrategy implements PackStrategy
                 $query->where('rarity', $rarity)
                     ->where('set_id', $this->set->id);
             })
-            ->withData()
+            ->withData($this->set)
             ->LoadVersionWithVariant($this->set, $variant)
             ->limit(1)
             ->get();
@@ -110,7 +110,7 @@ class SORPackStrategy implements PackStrategy
                 $query->where('rarity', $rarity);
                 $query->where('set_id', $this->set->id);
             })
-            ->withData()
+            ->withData($this->set)
             ->LoadVersionWithVariant($this->set)
             ->limit(1)
             ->get();
@@ -130,7 +130,7 @@ class SORPackStrategy implements PackStrategy
                 $query->where('rarity', 'Common');
                 $query->where('set_id', $this->set->id);
             })
-            ->withData()
+            ->withData($this->set)
             ->LoadVersionWithVariant($this->set)
             ->limit($amount)
             ->get();
@@ -150,7 +150,7 @@ class SORPackStrategy implements PackStrategy
                 $query->where('rarity', 'Uncommon');
                 $query->where('set_id', $this->set->id);
             })
-            ->withData()
+            ->withData($this->set)
             ->LoadVersionWithVariant($this->set)
             ->limit($amount)
             ->get();
@@ -175,7 +175,7 @@ class SORPackStrategy implements PackStrategy
                 $query->where('rarity', $rarity);
                 $query->where('set_id', $this->set->id);
             })
-            ->withData()
+            ->withData($this->set)
             ->LoadVersionWithVariant($this->set)
             ->limit($amount)
             ->get();
@@ -208,7 +208,7 @@ class SORPackStrategy implements PackStrategy
                 $query->where('set_id', $this->set->id)
                     ->whereIn('rarity', $rarity);
             })
-            ->withData()
+            ->withData($this->set)
             ->LoadVersionWithVariant($this->set, 'Foil')
             ->limit($amount)
             ->get();
@@ -237,7 +237,7 @@ class SORPackStrategy implements PackStrategy
                 $query->where('set_id', $this->set->id);
                 $query->whereIn('rarity', $rarities);
             })
-            ->withData()
+            ->withData($this->set)
             ->LoadVersionWithVariant($this->set, $variant)
             ->limit($amount)
             ->get();

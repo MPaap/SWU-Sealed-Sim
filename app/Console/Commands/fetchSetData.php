@@ -120,22 +120,22 @@ class fetchSetData extends Command
 
         foreach ($data['Aspects'] ?? [] as $aspectName) {
             $aspect = CardAspect::firstOrCreate(['name' => $aspectName]);
-            $card->aspects()->syncWithoutDetaching($aspect);
+            $card->aspects()->syncwithoutDetaching($aspect);
         }
 
         foreach ($data['Arenas'] ?? [] as $arenaName) {
             $arena = CardArena::firstOrCreate(['name' => $arenaName]);
-            $card->arenas()->syncWithoutDetaching($arena);
+            $card->arenas()->syncwithoutDetaching($arena);
         }
 
         foreach ($data['Traits'] ?? [] as $traitName) {
             $trait = CardTrait::firstOrCreate(['name' => $traitName]);
-            $card->traits()->syncWithoutDetaching($trait);
+            $card->traits()->syncwithoutDetaching($trait);
         }
 
         foreach ($data['Keywords'] ?? [] as $keywordName) {
             $keyword = CardKeyword::firstOrCreate(['name' => $keywordName]);
-            $card->keywords()->syncWithoutDetaching($keyword);
+            $card->keywords()->syncwithoutDetaching($keyword);
         }
 
         $card->versions()->firstOrCreate([

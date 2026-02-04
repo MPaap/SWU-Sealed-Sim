@@ -43,6 +43,17 @@ class Card extends Model
         return $this->hasMany(CardVersion::class);
     }
 
+    public function ratings(): Card|\Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(Rating::class);
+    }
+
+    public function userRating(): \Illuminate\Database\Eloquent\Relations\HasOne
+    {
+        return $this->hasOne(Rating::class)
+            ->where('user_id', auth()->id());
+    }
+
     public function scopeNonLeader($query)
     {
         $query->whereNotIn('type', ['leader']);
@@ -53,9 +64,12 @@ class Card extends Model
         $query->whereNotIn('type', ['leader', 'base']);
     }
 
-    public function scopeWithData($query)
+    public function scopeWithData($query, Set $set)
     {
-        $query->with(['arenas', 'aspects', 'keywords', 'traits']);
+        $query->with(['arenas', 'aspects', 'keywords', 'traits'])
+            ->withAvg(['ratings' => function ($query) use ($set) {
+                $query->forSet($set);
+            }], 'rating');
     }
 
     public function scopeLoadVersionWithVariant($query, Set $set, $variant = 'normal')

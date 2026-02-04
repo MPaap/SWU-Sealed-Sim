@@ -7,7 +7,7 @@ import 'vue3-toastify/dist/index.css';
 
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
-import { faFilter, faShare, faRefresh, faSort, faFileArrowDown, faFloppyDisk, faCaretDown, faPlus } from '@fortawesome/free-solid-svg-icons'
+import { faFilter, faShare, faRefresh, faSort, faFileArrowDown, faFloppyDisk, faCaretDown, faPlus, faStar } from '@fortawesome/free-solid-svg-icons'
 
 library.add(faFilter)
 library.add(faShare)
@@ -17,6 +17,7 @@ library.add(faFileArrowDown)
 library.add(faFloppyDisk)
 library.add(faCaretDown)
 library.add(faPlus)
+library.add(faStar)
 
 import { useFloating, autoUpdate, offset, flip, shift } from '@floating-ui/vue';
 
@@ -293,13 +294,13 @@ createApp({
             return String(n);
         },
 
-        countCardsWithAspect(aspectName) {
+        countCardswithAspect(aspectName) {
             return this.sortedOpenCards.filter(card =>
                 card.aspects.some(a => a.name === aspectName)
             ).length;
         },
 
-        countCardsWithRarity(rarity) {
+        countCardswithRarity(rarity) {
             return this.sortedOpenCards.filter(card => card.version.rarity === rarity).length;
         },
 
@@ -313,6 +314,10 @@ createApp({
                         })
                     })
             }
+        },
+
+        formatRating(value) {
+            return value ? Number(value).toFixed(1) : 'N/A';
         }
     },
 
@@ -335,6 +340,10 @@ createApp({
 
             if (this.sort_by === 'cost') {
                 cards.sort((a, b) => a.cost - b.cost);
+            }
+
+            if (this.sort_by === 'ratings_avg_rating') {
+                cards.sort((a, b) => b.ratings_avg_rating - a.ratings_avg_rating);
             }
 
             return cards;

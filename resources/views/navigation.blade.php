@@ -13,6 +13,10 @@
                 <a href="{{ route('auth.deck') }}" class="p-4 hover:bg-gray-700">
                     Saved Decks
                 </a>
+
+                <a href="{{ route('rating.index') }}" class="p-4 hover:bg-gray-700">
+                    Ratings
+                </a>
             </div>
 
             <div class="flex items-center">

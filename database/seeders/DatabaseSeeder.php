@@ -6,12 +6,12 @@ use App\Models\CardArena;
 use App\Models\CardAspect;
 use App\Models\Set;
 use App\Models\User;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use Illuminate\Database\Console\Seeds\withoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
 {
-    use WithoutModelEvents;
+    use withoutModelEvents;
 
     /**
      * Seed the application's database.

@@ -50,8 +50,8 @@ class PoolController extends Controller
                     $query->where('rarity', 'Common');
                     $query->where('set_id', $set->id);
                 })
-                ->withData()
-                ->LoadVersionWithVariant($set)
+                ->withData($set)
+                ->LoadVersionwithVariant($set)
                 ->get(),
             'packs' => $packs
         ];
@@ -115,8 +115,8 @@ class PoolController extends Controller
                 $query->where('rarity', 'Special')
                     ->where('set_id', $set->id);
             })
-            ->withData()
-            ->LoadVersionWithVariant($set, 'Normal')
+            ->withData($set)
+            ->LoadVersionwithVariant($set, 'Normal')
             ->get();
 
         $cards->each(function ($card) use ($cards) {
